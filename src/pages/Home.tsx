@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import combo1 from "../assets/combo1.png"; // Swap with other combo images later
-import logo from "../assets/logo.png";
-
 const combos = [
   {
     id: 1,
@@ -70,7 +68,7 @@ function Home() {
         <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 py-20 lg:py-0">
           
           {/* ── LEFT COLUMN: ANIMATED TEXT ───────────────────────── */}
-          <div className="w-full relative z-20 flex flex-col justify-center pt-8 lg:pt-0 h-[400px]">
+          <div className="w-full relative z-20 flex flex-col justify-center pt-8 lg:pt-0 h-100">
             <div className="inline-flex items-center gap-2 bg-white/15 border border-white/20 text-white w-max
               text-[10px] font-black tracking-[0.2em] px-4 py-1.5 rounded-full uppercase mb-6 shadow-sm backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -96,7 +94,7 @@ function Home() {
                   </span>
                 </h1>
 
-                <p className="mt-6 text-orange-50 text-base md:text-lg leading-relaxed max-w-md font-medium text-shadow-sm h-[60px]">
+                <p className="mt-6 text-orange-50 text-base md:text-lg leading-relaxed max-w-md font-medium text-shadow-sm h-15">
                   {activeCombo.desc}
                 </p>
 
@@ -133,7 +131,7 @@ function Home() {
           </div>
 
           {/* ── RIGHT COLUMN: ANIMATED FOOD IMAGE ─────────────────────── */}
-          <div className="relative w-full h-[400px] lg:h-[600px] flex justify-center lg:justify-end items-center mt-10 lg:mt-0">
+          <div className="relative w-full h-100 lg:h-150 flex justify-center lg:justify-end items-center mt-10 lg:mt-0">
             <AnimatePresence mode="wait">
               <motion.img
                 key={activeCombo.id}
@@ -143,7 +141,7 @@ function Home() {
                 transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
                 src={activeCombo.image}
                 alt={activeCombo.title}
-                className="absolute w-[90%] lg:w-[115%] max-w-[600px] lg:max-w-[800px] object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] z-10 origin-center"
+                className="absolute w-[90%] lg:w-[115%] max-w-150 lg:max-w-200 object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] z-10 origin-center"
               />
             </AnimatePresence>
 
@@ -156,7 +154,7 @@ function Home() {
                 exit={{ opacity: 0, scale: 0 }}
                 transition={{ delay: 0.2, duration: 0.4, type: "spring" }}
                 className="absolute top-[5%] left-[5%] lg:left-[-5%] bg-white rounded-2xl px-5 py-3
-                  shadow-2xl rotate-[-6deg] flex items-center gap-2 select-none z-20"
+                  shadow-2xl -rotate-6 flex items-center gap-2 select-none z-20"
               >
                 <p className="text-[#ec7719] font-black text-sm uppercase tracking-widest">
                   {activeCombo.badge}
