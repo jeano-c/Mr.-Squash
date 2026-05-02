@@ -43,38 +43,40 @@ function NavBar() {
       <nav
         className={`sticky top-0 z-50 flex flex-row justify-between items-center bg-[#ec7719]
           transition-all duration-300 ease-in-out
-          ${scrolled ? "px-6 py-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.25)]" : "px-6 py-2.5 shadow-none"}`}
+          ${scrolled ? "px-6 py-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.25)]" : "px-6 py-2 shadow-none"}`}
       >
         {/* Logo + Brand */}
         <div
           onClick={() => navigate("/")}
-          className="flex flex-row items-center gap-3 group cursor-pointer"
+          className="flex flex-row items-center gap-2.5 group cursor-pointer"
         >
           <div className="relative">
             <img
+              /* SCALED DOWN LOGO */
               className={`transition-all duration-300 group-hover:rotate-[8deg] group-hover:scale-110 drop-shadow-md
-                ${scrolled ? "h-10 w-10 md:h-12 md:w-12" : "h-16 w-16 md:h-20 md:w-20"}`}
+                ${scrolled ? "h-8 w-8 md:h-10 md:w-10" : "h-12 w-12 md:h-14 md:w-14"}`}
               src={logo}
               alt="mrsquash"
             />
             <div className="absolute inset-0 rounded-full bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-300" />
           </div>
           <p
+            /* SCALED DOWN BRAND TEXT */
             className={`capitalize font-bold font-sans text-white tracking-tight drop-shadow-sm transition-all duration-300
-            ${scrolled ? "text-xl md:text-2xl" : "text-3xl md:text-4xl"}`}
+            ${scrolled ? "text-lg md:text-xl" : "text-xl md:text-2xl"}`}
           >
             Mr. Squash
           </p>
         </div>
 
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex flex-row items-center gap-3">
+        <div className="hidden md:flex flex-row items-center gap-2">
           {navigation.map((item) => (
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`cursor-pointer relative font-semibold tracking-widest rounded-full transition-all duration-300
-                ${scrolled ? "px-3 py-1 text-xs" : "px-4 py-1.5 text-sm"}
+              className={`cursor-pointer relative font-bold tracking-widest rounded-full transition-all duration-300
+                ${scrolled ? "px-3 py-1 text-[10px]" : "px-4 py-1.5 text-xs"}
                 ${
                   isActive(item.path)
                     ? "text-[#ec7719] bg-white shadow-md scale-105"
@@ -83,26 +85,28 @@ function NavBar() {
             >
               {item.label}
               {isActive(item.path) && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#ec7719] shadow-sm" />
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#ec7719] shadow-sm" />
               )}
             </button>
           ))}
         </div>
 
         {/* Right: Cart + Hamburger */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setCartOpen(true)}
-            className="relative group p-1.5 rounded-full cursor-pointer hover:bg-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
+            className="relative group p-2 rounded-full cursor-pointer hover:bg-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
           >
             <TiShoppingCart
+              /* SCALED DOWN CART ICON */
               className={`text-white drop-shadow-sm transition-all duration-300
-              ${scrolled ? "text-4xl" : "text-5xl md:text-6xl"}`}
+              ${scrolled ? "text-2xl" : "text-3xl md:text-4xl"}`}
             />
             {cartCount > 0 && (
               <span
-                className="absolute top-1 right-1 min-w-5.5 h-5.5 flex items-center justify-center
-                bg-white text-[#ec7719] text-xs font-bold rounded-full border-2 border-[#ec7719]
+                /* TWEAKED BADGE SIZE & POSITION TO MATCH NEW ICON SIZE */
+                className="absolute top-0 right-0 min-w-4.5 h-4.5 flex items-center justify-center
+                bg-white text-[#ec7719] text-[10px] font-black rounded-full border-2 border-[#ec7719]
                 animate-bounce shadow-md leading-none px-1"
               >
                 {cartCount > 99 ? "99+" : cartCount}
@@ -115,9 +119,9 @@ function NavBar() {
             className="md:hidden p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-95"
           >
             {menuOpen ? (
-              <HiX className="text-white text-3xl" />
+              <HiX className="text-white text-2xl" />
             ) : (
-              <HiMenuAlt3 className="text-white text-3xl" />
+              <HiMenuAlt3 className="text-white text-2xl" />
             )}
           </button>
         </div>
@@ -164,7 +168,7 @@ function NavBar() {
         {/* Sidebar header */}
         <div className="bg-[#ec7719] px-5 py-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
-            <TiShoppingCart className="text-white text-3xl" />
+            <TiShoppingCart className="text-white text-2xl" />
             <h2 className="text-white font-black text-xl tracking-tight">
               Your Order
             </h2>
@@ -173,7 +177,7 @@ function NavBar() {
             onClick={() => setCartOpen(false)}
             className="text-white hover:bg-white/20 p-1.5 rounded-full transition-all duration-200 active:scale-95"
           >
-            <HiX className="text-2xl" />
+            <HiX className="text-xl" />
           </button>
         </div>
 
