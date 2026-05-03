@@ -190,8 +190,8 @@ interface MenuCardProps {
 function MenuCard({ item }: MenuCardProps) {
   const { addToCart, cartItems } = useCart();
   const [flash, setFlash] = useState<boolean>(false);
-  // ✅ Fixed code (Removed ': MenuItem')
-  const inCart = cartItems.some((i) => i.id === item.id);
+ // ✅ Fixed code (Removed ': MenuItem')
+const inCart = cartItems.some((i) => i.id === item.id);
 
   function handleAdd() {
     addToCart(item);

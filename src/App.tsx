@@ -6,12 +6,15 @@ import Menu from "./pages/Menu";
 import { CartProvider } from "./context/CartProvider";
 import Career from "./pages/Career";
 import AboutUs from "./pages/AboutUs";
+import Footer from "./components/Footer";
+
 
 function Layout() {
   return (
     <>
       <NavBar />
       <Outlet />
+      <Footer />
     </>
   );
 }
