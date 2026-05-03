@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import { TiShoppingCart } from "react-icons/ti";
-import { HiMenuAlt3, HiX, HiPlus, HiMinus, HiTrash } from "react-icons/hi";
+import {
+  HiX,
+  HiPlus,
+  HiMinus,
+  HiTrash,
+  HiHome,
+  HiMenu,
+  HiBriefcase,
+  HiInformationCircle,
+} from "react-icons/hi";
 import logo from "../assets/logo.png";
 import { useNavigate, useLocation } from "react-router";
 import { useCart } from "../context/CartContext";
@@ -12,14 +21,25 @@ function NavBar() {
     useCart();
 
   const navigation = [
-    { label: "HOME", path: "/" },
-    { label: "MENU", path: "/menu" },
-    { label: "CAREER", path: "/career" },
-    { label: "ABOUT US", path: "/about" },
+    { label: "HOME", path: "/", mobileIcon: <HiHome className="text-xl" /> },
+    {
+      label: "MENU",
+      path: "/menu",
+      mobileIcon: <HiMenu className="text-xl" />,
+    },
+    {
+      label: "CAREER",
+      path: "/career",
+      mobileIcon: <HiBriefcase className="text-xl" />,
+    },
+    {
+      label: "ABOUT US",
+      path: "/about",
+      mobileIcon: <HiInformationCircle className="text-xl" />,
+    },
   ];
 
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
   useEffect(() => {
@@ -43,40 +63,38 @@ function NavBar() {
       <nav
         className={`sticky top-0 z-50 flex flex-row justify-between items-center bg-[#ec7719]
           transition-all duration-300 ease-in-out
-          ${scrolled ? "px-6 py-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.25)]" : "px-6 py-2 shadow-none"}`}
+          ${scrolled ? "px-6 py-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.25)]" : "px-6 py-2.5 shadow-none"}`}
       >
         {/* Logo + Brand */}
         <div
           onClick={() => navigate("/")}
-          className="flex flex-row items-center gap-2.5 group cursor-pointer"
+          className="flex flex-row items-center gap-3 group cursor-pointer"
         >
           <div className="relative">
             <img
-              /* SCALED DOWN LOGO */
               className={`transition-all duration-300 group-hover:rotate-[8deg] group-hover:scale-110 drop-shadow-md
-                ${scrolled ? "h-8 w-8 md:h-10 md:w-10" : "h-12 w-12 md:h-14 md:w-14"}`}
+                ${scrolled ? "h-10 w-10 md:h-12 md:w-12" : "h-16 w-16 md:h-20 md:w-20"}`}
               src={logo}
               alt="mrsquash"
             />
             <div className="absolute inset-0 rounded-full bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-300" />
           </div>
           <p
-            /* SCALED DOWN BRAND TEXT */
             className={`capitalize font-bold font-sans text-white tracking-tight drop-shadow-sm transition-all duration-300
-            ${scrolled ? "text-lg md:text-xl" : "text-xl md:text-2xl"}`}
+            ${scrolled ? "text-xl md:text-2xl" : "text-3xl md:text-4xl"}`}
           >
             Mr. Squash
           </p>
         </div>
 
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex flex-row items-center gap-2">
+        <div className="hidden md:flex flex-row items-center gap-3">
           {navigation.map((item) => (
             <button
               key={item.label}
               onClick={() => navigate(item.path)}
-              className={`cursor-pointer relative font-bold tracking-widest rounded-full transition-all duration-300
-                ${scrolled ? "px-3 py-1 text-[10px]" : "px-4 py-1.5 text-xs"}
+              className={`cursor-pointer relative font-semibold tracking-widest rounded-full transition-all duration-300
+                ${scrolled ? "px-3 py-1 text-xs" : "px-4 py-1.5 text-sm"}
                 ${
                   isActive(item.path)
                     ? "text-[#ec7719] bg-white shadow-md scale-105"
@@ -85,72 +103,115 @@ function NavBar() {
             >
               {item.label}
               {isActive(item.path) && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#ec7719] shadow-sm" />
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#ec7719] shadow-sm" />
               )}
             </button>
           ))}
         </div>
 
-        {/* Right: Cart + Hamburger */}
-        <div className="flex items-center gap-2">
+        {/* Right: Cart only on desktop — bottom tab handles mobile */}
+        <div className="flex items-center gap-3">
           <button
             onClick={() => setCartOpen(true)}
-            className="relative group p-2 rounded-full cursor-pointer hover:bg-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
+            className="relative group p-1.5 rounded-full cursor-pointer hover:bg-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
           >
             <TiShoppingCart
-              /* SCALED DOWN CART ICON */
               className={`text-white drop-shadow-sm transition-all duration-300
-              ${scrolled ? "text-2xl" : "text-3xl md:text-4xl"}`}
+              ${scrolled ? "text-4xl" : "text-5xl md:text-6xl"}`}
             />
             {cartCount > 0 && (
               <span
-                /* TWEAKED BADGE SIZE & POSITION TO MATCH NEW ICON SIZE */
-                className="absolute top-0 right-0 min-w-4.5 h-4.5 flex items-center justify-center
-                bg-white text-[#ec7719] text-[10px] font-black rounded-full border-2 border-[#ec7719]
+                className="absolute top-1 right-1 min-w-5.5 h-5.5 flex items-center justify-center
+                bg-white text-[#ec7719] text-xs font-bold rounded-full border-2 border-[#ec7719]
                 animate-bounce shadow-md leading-none px-1"
               >
                 {cartCount > 99 ? "99+" : cartCount}
               </span>
             )}
           </button>
-
-          <button
-            onClick={() => setMenuOpen((o) => !o)}
-            className="md:hidden p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-95"
-          >
-            {menuOpen ? (
-              <HiX className="text-white text-2xl" />
-            ) : (
-              <HiMenuAlt3 className="text-white text-2xl" />
-            )}
-          </button>
         </div>
       </nav>
 
-      {/* ── Mobile Dropdown ─────────────────────────────────────── */}
+      {/* ── Mobile Bottom Tab Bar ───────────────────────────────── */}
       <div
-        className={`md:hidden bg-[#d96810] overflow-hidden transition-all duration-300 ease-in-out z-40 relative
-          ${menuOpen ? "max-h-64 py-3" : "max-h-0 py-0"}`}
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50
+        bg-white/90 backdrop-blur-xl border-t border-gray-100 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        {navigation.map((item, i) => (
+        <div className="flex items-stretch">
+          {navigation.map((item) => {
+            const active = isActive(item.path);
+            return (
+              <button
+                key={item.label}
+                onClick={() => navigate(item.path)}
+                className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5
+                  relative transition-all duration-200 active:scale-95 group"
+              >
+                {/* active pill background */}
+                {active && (
+                  <span
+                    className="absolute top-1.5 left-1/2 -translate-x-1/2
+                    w-10 h-10 rounded-2xl bg-[#ec7719]/10 z-0"
+                  />
+                )}
+
+                {/* icon */}
+                <span
+                  className={`relative z-10 transition-all duration-200
+                  ${active ? "text-[#ec7719] scale-110" : "text-gray-400 group-hover:text-[#ec7719]"}`}
+                >
+                  {item.mobileIcon}
+                </span>
+
+                {/* label */}
+                <span
+                  className={`text-[9px] font-black tracking-wider uppercase leading-none transition-colors duration-200
+                  ${active ? "text-[#ec7719]" : "text-gray-400 group-hover:text-[#ec7719]"}`}
+                >
+                  {item.label === "ABOUT US" ? "ABOUT" : item.label}
+                </span>
+
+                {/* active dot */}
+                {active && (
+                  <span
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2
+                    w-1 h-1 rounded-full bg-[#ec7719]"
+                  />
+                )}
+              </button>
+            );
+          })}
+
+          {/* Cart tab */}
           <button
-            key={item.label}
-            onClick={() => {
-              navigate(item.path);
-              setMenuOpen(false);
-            }}
-            style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
-            className={`w-full text-left px-8 py-3 text-sm font-semibold tracking-widest transition-all duration-200
-              ${
-                isActive(item.path)
-                  ? "text-[#ec7719] bg-white/95 border-l-4 border-white"
-                  : "text-white hover:bg-white/10 border-l-4 border-transparent"
-              }`}
+            onClick={() => setCartOpen(true)}
+            className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5
+              relative transition-all duration-200 active:scale-95 group"
           >
-            {item.label}
+            <span className="relative z-10 text-gray-400 group-hover:text-[#ec7719] transition-colors duration-200">
+              <TiShoppingCart className="text-xl" />
+              {cartCount > 0 && (
+                <span
+                  className="absolute -top-1.5 -right-2 min-w-4 h-4 flex items-center justify-center
+                  bg-[#ec7719] text-white text-[9px] font-black rounded-full leading-none px-0.5"
+                >
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
+            </span>
+            <span
+              className="text-[9px] font-black tracking-wider uppercase leading-none text-gray-400
+              group-hover:text-[#ec7719] transition-colors duration-200"
+            >
+              CART
+            </span>
           </button>
-        ))}
+        </div>
       </div>
+
+      {/* bottom tab bar spacer so page content isn't hidden behind it */}
+      <div className="md:hidden h-16" />
 
       {/* ── Backdrop ────────────────────────────────────────────── */}
       <div
@@ -168,7 +229,7 @@ function NavBar() {
         {/* Sidebar header */}
         <div className="bg-[#ec7719] px-5 py-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
-            <TiShoppingCart className="text-white text-2xl" />
+            <TiShoppingCart className="text-white text-3xl" />
             <h2 className="text-white font-black text-xl tracking-tight">
               Your Order
             </h2>
@@ -177,7 +238,7 @@ function NavBar() {
             onClick={() => setCartOpen(false)}
             className="text-white hover:bg-white/20 p-1.5 rounded-full transition-all duration-200 active:scale-95"
           >
-            <HiX className="text-xl" />
+            <HiX className="text-2xl" />
           </button>
         </div>
 
