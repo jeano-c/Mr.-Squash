@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { HiPlus, HiCheck } from "react-icons/hi";
 import { useCart } from "../context/CartContext";
 
@@ -190,8 +190,8 @@ interface MenuCardProps {
 function MenuCard({ item }: MenuCardProps) {
   const { addToCart, cartItems } = useCart();
   const [flash, setFlash] = useState<boolean>(false);
- // ✅ Fixed code (Removed ': MenuItem')
-const inCart = cartItems.some((i) => i.id === item.id);
+  
+  const inCart = cartItems.some((i) => i.id === item.id);
 
   function handleAdd() {
     addToCart(item);
@@ -269,7 +269,49 @@ function SectionHeading({ label }: SectionHeadingProps) {
 // ── Page ─────────────────────────────────────────────────────────────────────
 function Menu() {
   const [activeSection, setActiveSection] = useState<string>("squawk");
+  
+  // ── REFS FOR SCROLLING AND TRACKING ──
+  const navRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // ── 1. OBSERVE SCROLL POSITION TO HIGHLIGHT ACTIVE SECTION ──
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      // Root margin offsets the top by 120px (ignoring the sticky nav) 
+      // and shrinks the bottom by 60% so sections trigger as they near the top
+      { rootMargin: "-120px 0px -60% 0px" } 
+    );
+
+    const currentSections = sectionRefs.current;
+    Object.values(currentSections).forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      Object.values(currentSections).forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, []);
+
+  // ── 2. AUTO-SCROLL THE HORIZONTAL NAV ON MOBILE ──
+  useEffect(() => {
+    const nav = navRef.current;
+    const activeBtn = buttonRefs.current[activeSection];
+    if (nav && activeBtn) {
+      // Calculate position to scroll the active button right into the center of the screen
+      const scrollPos = activeBtn.offsetLeft - nav.offsetWidth / 2 + activeBtn.offsetWidth / 2;
+      nav.scrollTo({ left: scrollPos, behavior: "smooth" });
+    }
+  }, [activeSection]);
 
   function scrollToSection(id: string) {
     setActiveSection(id);
@@ -297,12 +339,16 @@ function Menu() {
       {/* Sticky category nav */}
       <div className="sticky top-15 z-40 bg-[#faf5ef]/90 backdrop-blur-sm border-b border-orange-100 px-4 py-3">
         <div
-          className="max-w-6xl mx-auto flex gap-2 overflow-x-auto pb-0.5"
+          ref={navRef} // Attached ref to the scrolling container
+          className="max-w-6xl mx-auto flex gap-2 overflow-x-auto pb-0.5 scroll-smooth"
           style={{ scrollbarWidth: "none" }}
         >
           {SECTIONS.map((s) => (
             <button
               key={s.id}
+              ref={(el) => {
+                buttonRefs.current[s.id] = el; // Attached ref to each button
+              }}
               onClick={() => scrollToSection(s.id)}
               className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide
                 transition-all duration-200 whitespace-nowrap
@@ -323,6 +369,7 @@ function Menu() {
         {SECTIONS.map((section) => (
           <div
             key={section.id}
+            id={section.id} // Added ID here for the IntersectionObserver to track
             ref={(el) => {
               sectionRefs.current[section.id] = el;
             }}
