@@ -28,20 +28,22 @@ function NavBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Update: Lock body scroll if EITHER the cart or the mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = cartOpen ? "hidden" : "";
+    document.body.style.overflow = cartOpen || menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [cartOpen]);
+  }, [cartOpen, menuOpen]);
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <>
       {/* ── Navbar ─────────────────────────────────────────────── */}
+      {/* Set Navbar z-index to 40 so the drawers (z-[60]) float above it */}
       <nav
-        className={`sticky top-0 z-50 flex flex-row justify-between items-center bg-[#ec7719]
+        className={`sticky top-0 z-40 flex flex-row justify-between items-center bg-[#ec7719]
           transition-all duration-300 ease-in-out
           ${scrolled ? "px-6 py-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.25)]" : "px-6 py-2 shadow-none"}`}
       >
@@ -52,7 +54,6 @@ function NavBar() {
         >
           <div className="relative">
             <img
-              /* SCALED DOWN LOGO */
               className={`transition-all duration-300 group-hover:rotate-[8deg] group-hover:scale-110 drop-shadow-md
                 ${scrolled ? "h-8 w-8 md:h-10 md:w-10" : "h-12 w-12 md:h-14 md:w-14"}`}
               src={logo}
@@ -61,7 +62,6 @@ function NavBar() {
             <div className="absolute inset-0 rounded-full bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-300" />
           </div>
           <p
-            /* SCALED DOWN BRAND TEXT */
             className={`capitalize font-bold font-sans text-white tracking-tight drop-shadow-sm transition-all duration-300
             ${scrolled ? "text-lg md:text-xl" : "text-xl md:text-2xl"}`}
           >
@@ -98,13 +98,11 @@ function NavBar() {
             className="relative group p-2 rounded-full cursor-pointer hover:bg-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
           >
             <TiShoppingCart
-              /* SCALED DOWN CART ICON */
               className={`text-white drop-shadow-sm transition-all duration-300
               ${scrolled ? "text-2xl" : "text-3xl md:text-4xl"}`}
             />
             {cartCount > 0 && (
               <span
-                /* TWEAKED BADGE SIZE & POSITION TO MATCH NEW ICON SIZE */
                 className="absolute top-0 right-0 min-w-4.5 h-4.5 flex items-center justify-center
                 bg-white text-[#ec7719] text-[10px] font-black rounded-full border-2 border-[#ec7719]
                 animate-bounce shadow-md leading-none px-1"
@@ -115,53 +113,77 @@ function NavBar() {
           </button>
 
           <button
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={() => setMenuOpen(true)}
             className="md:hidden p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-95"
           >
-            {menuOpen ? (
-              <HiX className="text-white text-2xl" />
-            ) : (
-              <HiMenuAlt3 className="text-white text-2xl" />
-            )}
+            <HiMenuAlt3 className="text-white text-2xl" />
           </button>
         </div>
       </nav>
 
-      {/* ── Mobile Dropdown ─────────────────────────────────────── */}
+      {/* ── Universal Backdrop ──────────────────────────────────── */}
+      {/* This single backdrop handles BOTH the menu and the cart */}
       <div
-        className={`md:hidden bg-[#d96810] overflow-hidden transition-all duration-300 ease-in-out z-40 relative
-          ${menuOpen ? "max-h-64 py-3" : "max-h-0 py-0"}`}
-      >
-        {navigation.map((item, i) => (
-          <button
-            key={item.label}
-            onClick={() => {
-              navigate(item.path);
-              setMenuOpen(false);
-            }}
-            style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
-            className={`w-full text-left px-8 py-3 text-sm font-semibold tracking-widest transition-all duration-200
-              ${
-                isActive(item.path)
-                  ? "text-[#ec7719] bg-white/95 border-l-4 border-white"
-                  : "text-white hover:bg-white/10 border-l-4 border-transparent"
-              }`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      {/* ── Backdrop ────────────────────────────────────────────── */}
-      <div
-        onClick={() => setCartOpen(false)}
-        className={`fixed inset-0 bg-black/40 z-50 transition-opacity duration-300
-          ${cartOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        onClick={() => {
+          setCartOpen(false);
+          setMenuOpen(false);
+        }}
+        className={`fixed inset-0 bg-black/50 z-50 backdrop-blur-sm transition-all duration-300
+          ${cartOpen || menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       />
 
-      {/* ── Cart Sidebar ────────────────────────────────────────── */}
+      {/* ── Mobile Menu Drawer (Left Side) ──────────────────────── */}
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-sm bg-white z-50 shadow-2xl
+        className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-[#faf5ef] z-[60] shadow-2xl
+          flex flex-col transition-transform duration-300 ease-in-out md:hidden
+          ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        {/* Menu Header */}
+        <div className="bg-[#ec7719] px-5 py-4 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="mrsquash" className="h-8 w-8 drop-shadow-md" />
+            <h2 className="text-white font-black text-xl tracking-tight">Menu</h2>
+          </div>
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="text-white hover:bg-white/20 p-1.5 rounded-full transition-all duration-200 active:scale-95"
+          >
+            <HiX className="text-xl" />
+          </button>
+        </div>
+
+        {/* Menu Links */}
+        <div className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-6">
+          {navigation.map((item) => (
+            <button
+              key={item.label}
+              onClick={() => {
+                navigate(item.path);
+                setMenuOpen(false);
+              }}
+              className={`w-full text-left font-black tracking-widest text-lg uppercase transition-all duration-200
+                ${
+                  isActive(item.path)
+                    ? "text-[#ec7719] translate-x-3"
+                    : "text-gray-900 hover:text-[#ec7719] hover:translate-x-3"
+                }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        
+        {/* Optional Menu Footer */}
+        <div className="p-6 border-t border-gray-200">
+           <p className="text-gray-400 text-xs font-bold uppercase tracking-widest text-center">
+             Valenzuela Flagship
+           </p>
+        </div>
+      </div>
+
+      {/* ── Cart Sidebar (Right Side) ───────────────────────────── */}
+      <div
+        className={`fixed top-0 right-0 h-full w-[90%] max-w-sm bg-white z-[60] shadow-2xl
           flex flex-col transition-transform duration-300 ease-in-out
           ${cartOpen ? "translate-x-0" : "translate-x-full"}`}
       >
