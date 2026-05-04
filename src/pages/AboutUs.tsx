@@ -1,105 +1,99 @@
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { HiOutlineArrowRight } from "react-icons/hi";
+import { HiOutlineMap, HiOutlineClock, HiOutlinePhone } from "react-icons/hi";
+import { FaFacebook, FaInstagram, FaTiktok, FaLeaf, FaFire } from "react-icons/fa";
 
 // ── Social Media Data ────────────────────────────────────────────────────────
 const SOCIALS = [
-  {
-    name: "Instagram",
-    url: "https://www.instagram.com/mr.squash_official?igsh=NnNscGpkbGhwZmF3"
-  },
-  {
-    name: "Facebook",
-    url: "https://www.facebook.com/profile.php?id=61589105545390"
-  },
-  {
-    name: "TikTok",
-    url: "https://www.tiktok.com/@mr.squash_official?_r=1&_t=ZS-95wEMOngiH7"
-  }
+  { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/mr.squash_official?igsh=NnNscGpkbGhwZmF3", color: "bg-pink-100 text-pink-600 hover:bg-pink-500 hover:text-white" },
+  { name: "Facebook", icon: FaFacebook, url: "https://www.facebook.com/profile.php?id=61589105545390", color: "bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white" },
+  { name: "TikTok", icon: FaTiktok, url: "https://www.tiktok.com/@mr.squash_official?_r=1&_t=ZS-95wEMOngiH7", color: "bg-gray-200 text-black hover:bg-black hover:text-white" }
 ];
 
 // ── Animation Variants ────────────────────────────────────────────────────────
-const fadeUpVariants: Variants = {
-  hidden: { opacity: 0, y: 40 },
+const bouncyFadeUp: Variants = {
+  hidden: { opacity: 0, y: 50 },
   visible: { 
     opacity: 1, 
     y: 0, 
-    transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] } 
+    transition: { type: "spring", stiffness: 200, damping: 15, bounce: 0.5 } 
   },
 };
 
 const staggerContainer: Variants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 // ─────────────────────────────────────────────────────────────────────────────
 
 function AboutUs() {
   return (
-    <div className="min-h-screen bg-[#faf5ef] selection:bg-[#ec7719] selection:text-white pb-16 md:pb-24 flex flex-col font-sans text-gray-900 overflow-hidden">
+    <div className="min-h-screen bg-[#faf5ef] selection:bg-[#ec7719] selection:text-white font-sans text-gray-900 overflow-hidden">
       
       {/* ══════════════════════════════════════════
-          EDITORIAL HERO
+          HERO SECTION (Curvy & Energetic)
       ══════════════════════════════════════════ */}
-      <section className="pt-24 md:pt-32 pb-12 md:pb-20 px-6 md:px-12 lg:px-24">
-        <motion.div 
-          initial="hidden" 
-          animate="visible" 
-          variants={staggerContainer}
-          className="max-w-7xl mx-auto"
-        >
-          <motion.p variants={fadeUpVariants} className="text-[#ec7719] text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase mb-6 md:mb-8">
-            Chapter 01 — Our Genesis
-          </motion.p>
-          <motion.h1 variants={fadeUpVariants} className="font-black text-5xl sm:text-6xl md:text-8xl lg:text-[10rem] tracking-tighter uppercase leading-[0.85] md:leading-[0.85] mb-8 md:mb-12 break-words">
-            The Calabasa <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ec7719] to-[#ffaa55]">
-              Revolution.
-            </span>
+      <section className="bg-[#ec7719] rounded-b-[3rem] md:rounded-b-[5rem] pt-28 md:pt-36 pb-24 md:pb-32 px-6 text-center relative shadow-xl z-20">
+        
+        {/* Floating Background Icons (Purely Decorative) */}
+        <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }} className="absolute top-20 left-10 text-orange-300 text-5xl opacity-50 hidden md:block"><FaLeaf /></motion.div>
+        <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }} className="absolute bottom-20 right-16 text-orange-300 text-6xl opacity-50 hidden md:block"><FaFire /></motion.div>
+
+        <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto relative z-10">
+          <motion.div variants={bouncyFadeUp} className="inline-block bg-white text-[#ec7719] font-black text-[10px] md:text-xs uppercase tracking-widest px-5 py-2 rounded-full mb-6 shadow-md rotate-2">
+            Fresh out the fryer!
+          </motion.div>
+          
+          <motion.h1 variants={bouncyFadeUp} className="font-black text-5xl sm:text-7xl md:text-8xl tracking-tight text-white leading-[0.9] mb-6 drop-shadow-md">
+            The Crunch <br />
+            You Deserve.
           </motion.h1>
+          
+          <motion.p variants={bouncyFadeUp} className="text-orange-50 text-base md:text-xl font-bold max-w-2xl mx-auto leading-relaxed">
+            We are redefining comfort food. No shortcuts. Just affordable, delicious meals starring 100% real Philippine Calabasa.
+          </motion.p>
         </motion.div>
       </section>
 
       {/* ══════════════════════════════════════════
-          60/40 SPLIT STORY
+          THE STORY (Chunky & Playful - Storefront Edition)
       ══════════════════════════════════════════ */}
-      <section className="px-6 md:px-12 lg:px-24 pb-20 md:pb-32">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-16 lg:gap-32 items-start">
+      <section className="px-6 md:px-12 lg:px-24 py-20 md:py-32 relative z-10 -mt-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-16">
           
-          {/* 60% Text Column */}
+          {/* Fun Image Container -> Now Storefront focused */}
           <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true, margin: "-50px" }}
-            variants={staggerContainer}
-            className="w-full md:w-[60%] flex flex-col gap-6 md:gap-8 text-base md:text-xl text-gray-600 font-medium leading-relaxed"
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={bouncyFadeUp} 
+            className="w-full md:w-1/2 relative"
           >
-            <motion.p variants={fadeUpVariants} className="text-xl md:text-3xl font-bold text-gray-900 leading-snug">
-              Mr. Squash is a fast-food restaurant dedicated to serving affordable, nutritious, and high-quality meals. 
-            </motion.p>
-            <motion.p variants={fadeUpVariants}>
-              We specialize in unique offerings like chicken coated in calabasa, giving our customers a healthier twist on their favorite comfort food without sacrificing the crunch they crave.
-            </motion.p>
-            <motion.p variants={fadeUpVariants}>
-              We source fresh, locally grown ingredients while maintaining strict quality standards. Our menu is designed to be budget-friendly, making our products accessible while building long-term customer relationships.
-            </motion.p>
+            {/* The tilted background blob */}
+            <div className="absolute inset-0 bg-[#fef08a] rounded-[3rem] rotate-6 scale-105 shadow-sm" />
+            
+            {/* The actual image container */}
+            <div className="relative aspect-square md:aspect-[4/3] bg-white rounded-[3rem] border-4 border-gray-900 flex flex-col items-center justify-center p-8 text-center shadow-[8px_8px_0px_#111] overflow-hidden group">
+               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+               <p className="text-[#111] font-black text-xl md:text-2xl uppercase tracking-widest relative z-10 group-hover:scale-110 transition-transform duration-300">
+                 [ Valenzuela Storefront ]
+               </p>
+               
+               {/* Sticker Badge changed to Flagship Store */}
+               <div className="absolute -bottom-4 -right-4 bg-red-500 text-white font-black text-xs uppercase px-4 py-4 rounded-full border-4 border-[#111] -rotate-12 shadow-md">
+                 Flagship Store
+               </div>
+            </div>
           </motion.div>
 
-          {/* 40% Visual Column */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }} 
-            whileInView={{ opacity: 1, scale: 1 }} 
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, ease: [0.25, 0.1, 0.25, 1] }}
-            className="w-full md:w-[40%] relative aspect-square md:aspect-[3/4] bg-gray-200 overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#ec7719]/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-gray-900 mix-blend-overlay">
-                Crafting the Perfect Crunch
+          {/* Text Block */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="w-full md:w-1/2 flex flex-col gap-6">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-gray-900 leading-none">
+              A Healthier <br/> <span className="text-[#ec7719]">Twist.</span>
+            </h2>
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-orange-100 flex flex-col gap-4">
+              <p className="text-gray-600 font-bold text-base leading-relaxed">
+                Mr. Squash is a fast-food restaurant dedicated to serving affordable, nutritious, and high-quality meals. We specialize in unique offerings like chicken coated in calabasa.
+              </p>
+              <p className="text-gray-600 font-bold text-base leading-relaxed">
+                Located near schools and community areas, our store provides a convenient, comfortable, and eco-friendly dining space where families and students can relax safely.
               </p>
             </div>
           </motion.div>
@@ -108,87 +102,80 @@ function AboutUs() {
       </section>
 
       {/* ══════════════════════════════════════════
-          MINIMALIST MISSION & VISION
+          TILTED MISSION & VISION CARDS
       ══════════════════════════════════════════ */}
-      <section className="bg-gray-900 text-white py-20 md:py-32 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-32">
+      <section className="px-6 md:px-12 lg:px-24 pb-20 md:pb-32">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           
+          {/* Mission Card (Tilted Left) */}
           <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true }}
-            variants={fadeUpVariants}
-            className="relative"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={bouncyFadeUp} 
+            className="bg-gray-900 text-white rounded-[3rem] p-10 md:p-14 shadow-xl md:-rotate-3 hover:rotate-0 transition-transform duration-300 border-4 border-gray-900"
           >
-            <div className="w-12 h-px bg-[#ec7719] mb-6 md:mb-8" />
-            <h3 className="font-black text-2xl md:text-3xl tracking-tight uppercase mb-4 md:mb-6">Our Mission</h3>
-            <p className="text-gray-400 text-base md:text-xl leading-relaxed font-medium">
-              To provide a healthier twist on comfort food by integrating high-quality, locally sourced calabasa into budget-friendly meals, fostering community well-being.
-            </p>
+             <div className="w-16 h-16 bg-[#ec7719] rounded-full flex items-center justify-center mb-8 border-4 border-gray-900 -mt-16 md:-mt-20">
+               <FaFire className="text-2xl text-white" />
+             </div>
+             <h3 className="text-3xl md:text-4xl font-black tracking-tight uppercase mb-4">Our Mission</h3>
+             <p className="text-gray-300 font-bold text-base md:text-lg leading-relaxed">
+               To provide a healthier twist on comfort food by integrating high-quality, locally sourced calabasa into budget-friendly meals, fostering community well-being.
+             </p>
           </motion.div>
 
+          {/* Vision Card (Tilted Right) */}
           <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true }}
-            variants={fadeUpVariants}
-            className="relative md:border-l border-gray-800 md:pl-16 lg:pl-32"
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={bouncyFadeUp} 
+            className="bg-[#fef08a] text-gray-900 rounded-[3rem] p-10 md:p-14 shadow-xl md:rotate-3 hover:rotate-0 transition-transform duration-300 border-4 border-gray-900 mt-8 md:mt-0"
           >
-            <div className="hidden md:block w-12 h-px bg-[#ec7719] mb-8" />
-            {/* Mobile-only divider line */}
-            <div className="md:hidden w-12 h-px bg-[#ec7719] mb-6 mt-4" />
-            <h3 className="font-black text-2xl md:text-3xl tracking-tight uppercase mb-4 md:mb-6">Our Vision</h3>
-            <p className="text-gray-400 text-base md:text-xl leading-relaxed font-medium">
-              To be the leading innovator in the local fast-food industry, recognized for transforming everyday vegetables into extraordinary culinary experiences.
-            </p>
+             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-8 border-4 border-gray-900 -mt-16 md:-mt-20">
+               <FaLeaf className="text-2xl text-[#111]" />
+             </div>
+             <h3 className="text-3xl md:text-4xl font-black tracking-tight uppercase mb-4">Our Vision</h3>
+             <p className="text-gray-700 font-bold text-base md:text-lg leading-relaxed">
+               To be the leading innovator in the local fast-food industry, recognized for transforming everyday vegetables into extraordinary culinary experiences.
+             </p>
           </motion.div>
 
         </div>
       </section>
 
       {/* ══════════════════════════════════════════
-          EDITORIAL SOCIALS & CONTACT
+          COMMUNITY & LOCATION (Pill buttons & Soft map)
       ══════════════════════════════════════════ */}
-      <section className="pt-20 md:pt-32 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-16 border-b border-gray-200 pb-16 md:pb-32">
+      <section className="px-6 md:px-12 lg:px-24 pb-24">
+        <div className="max-w-7xl mx-auto bg-white rounded-[3rem] md:rounded-[4rem] p-8 md:p-12 shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
           
-          {/* Giant Social Links (Data-Driven) */}
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="flex flex-col gap-4 md:gap-6"
-          >
-            <p className="text-[#ec7719] text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-2 md:mb-4">Connect</p>
-            {SOCIALS.map((network) => (
-              <motion.a 
-                key={network.name}
-                href={network.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                variants={fadeUpVariants}
-                className="font-black text-4xl sm:text-5xl md:text-7xl uppercase tracking-tighter text-gray-300 hover:text-gray-900 transition-colors flex items-center gap-4 md:gap-6 group"
-              >
-                {network.name}
-                <HiOutlineArrowRight className="opacity-0 -translate-x-6 md:-translate-x-10 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 text-3xl md:text-4xl text-[#ec7719]" />
-              </motion.a>
-            ))}
+          {/* Socials Area */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+            <h3 className="text-4xl md:text-6xl font-black tracking-tight text-[#111] leading-none mb-4">
+              Join the <span className="text-[#ec7719]">Squad!</span>
+            </h3>
+            <p className="text-gray-500 font-bold text-base md:text-lg mb-8 max-w-md">
+              Follow our journey, get exclusive crunch content, and catch our latest drops.
+            </p>
+            
+            {/* Pill Shaped Social Links */}
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+              {SOCIALS.map((social) => (
+                <motion.a 
+                  key={social.name}
+                  variants={bouncyFadeUp}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center gap-3 rounded-full px-6 py-4 font-black text-sm uppercase tracking-widest transition-all duration-300 shadow-sm hover:scale-105 active:scale-95 ${social.color}`}
+                >
+                  <social.icon className="text-xl" />
+                  {social.name}
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
 
-          {/* Elegant Contact Block w/ Map */}
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true }}
-            variants={fadeUpVariants}
-            className="flex flex-col gap-8 md:gap-10 lg:w-[450px]"
-          >
-            <div>
-              <p className="text-[#ec7719] text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-4 md:mb-6">Flagship Store</p>
-              
-              {/* ── GOOGLE MAPS IFRAME ── */}
-              <div className="w-full h-48 sm:h-64 mb-6 bg-gray-200 overflow-hidden relative shadow-sm border border-gray-200">
+          {/* Location Area */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={bouncyFadeUp} className="w-full lg:w-1/2 flex flex-col gap-6">
+            
+            {/* Bouncy Map Container */}
+            <div className="w-full h-56 sm:h-64 rounded-[2rem] overflow-hidden bg-gray-200 border-4 border-gray-900 shadow-[8px_8px_0px_#ec7719] relative group">
                 <iframe 
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241.20314067419363!2d120.98045693767165!3d14.698435163606128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b3f9674e1547%3A0xa7bf49cd0bfd7b4a!2s72%20G.%20Marcelo%2C%20Valenzuela%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1777899742720!5m2!1sen!2sph" 
                   width="100%" 
@@ -197,28 +184,26 @@ function AboutUs() {
                   allowFullScreen 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="absolute inset-0 w-full h-full grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+                  className="w-full h-full opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                 />
-              </div>
-
-              <p className="text-xl md:text-2xl font-bold text-gray-900 leading-snug">
-                72 G. Marcelo St, Maysan,<br />Valenzuela City
-              </p>
             </div>
             
-            <div className="w-full h-px bg-gray-200" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-              <div>
-                <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase mb-1 md:mb-2">Hours</p>
-                <p className="text-sm font-bold text-gray-900 leading-relaxed">Mon – Sun<br />11:00 AM — 9:00 PM</p>
+            {/* Quick Details Chips */}
+            <div className="flex flex-wrap gap-3">
+              <div className="bg-orange-50 text-[#ec7719] px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 border border-orange-100">
+                <HiOutlineMap className="text-lg" />
+                Valenzuela Flagship
               </div>
-              <div>
-                <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase mb-1 md:mb-2">Contact</p>
-                <p className="text-sm font-bold text-gray-900 leading-relaxed hover:text-[#ec7719] cursor-pointer transition-colors mb-0.5">0982 379 0274</p>
-                <p className="text-sm font-bold text-gray-900 leading-relaxed hover:text-[#ec7719] cursor-pointer transition-colors truncate">mrsquashofficial@gmail.com</p>
+              <div className="bg-gray-100 text-gray-600 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 border border-gray-200">
+                <HiOutlineClock className="text-lg" />
+                11am - 9pm
+              </div>
+              <div className="bg-gray-100 text-gray-600 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 border border-gray-200">
+                <HiOutlinePhone className="text-lg" />
+                0982 379 0274
               </div>
             </div>
+
           </motion.div>
 
         </div>
