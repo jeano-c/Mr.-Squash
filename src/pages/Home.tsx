@@ -71,24 +71,140 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#faf5ef] selection:bg-white selection:text-[#ec7719] flex flex-col overflow-x-hidden">
+      
       {/* ══════════════════════════════════════════
-          MOTION CAROUSEL HERO
+          MOBILE HERO VIEW (No-Scroll Viewport Height)
       ══════════════════════════════════════════ */}
       <section
-        className="relative w-full flex flex-col flex-1 items-center justify-center overflow-hidden bg-linear-to-br from-[#ec7719] to-[#c65e0a]"
+        className="flex md:hidden relative w-full h-[calc(100dvh-56px)] overflow-hidden bg-linear-to-br from-[#ec7719] to-[#c65e0a] flex-col justify-between px-5 py-6 text-center shrink-0"
+      >
+        {/* Subtle Background Pattern */}
+        <div
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, white 2px, transparent 2px)",
+            backgroundSize: "30px 30px",
+          }}
+        />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-white/10 rounded-full blur-[100px] pointer-events-none" />
+
+        {/* 1. Header Information */}
+        <div className="relative z-10 flex flex-col items-center pt-1">
+          <div
+            className="inline-flex items-center gap-1.5 bg-white/15 border border-white/20 text-white
+            text-[9px] font-black tracking-wider px-3.5 py-1.5 rounded-full uppercase mb-4 shadow-sm backdrop-blur-xs"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            Now Serving · Valenzuela City
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCombo.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-col items-center"
+            >
+              <h1 className="font-black uppercase tracking-tight leading-none text-white text-5xl drop-shadow-md">
+                {activeCombo.title}{" "}
+                <span className="text-yellow-200">{activeCombo.subtitle}</span>
+              </h1>
+              <p className="mt-2 text-orange-50 text-xs font-semibold leading-relaxed max-w-70">
+                {activeCombo.desc}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* 2. Middle Food Image Section */}
+        <div className="relative z-10 flex-1 flex items-center justify-center py-2 select-none">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={activeCombo.id}
+              initial={{ opacity: 0, scale: 0.85, rotate: -3 }}
+              animate={{ opacity: 1, scale: 1.05, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.85, rotate: 3 }}
+              transition={{ duration: 0.4, type: "spring", bounce: 0.25 }}
+              src={activeCombo.image}
+              alt={activeCombo.title}
+              className="w-auto h-[24vh] max-h-46.25 min-h-30 object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.5)]"
+            />
+          </AnimatePresence>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`badge-mobile-${activeCombo.id}`}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              className="absolute top-[12%] right-[8%] bg-white rounded-xl px-2.5 py-1.5 shadow-lg border border-orange-100 rotate-6"
+            >
+              <p className="text-[#ec7719] font-black text-[9px] uppercase tracking-wider">
+                {activeCombo.badge}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* 3. Action and Price Footer */}
+        <div className="relative z-10 flex flex-col items-center pb-1">
+          <div className="text-orange-50 font-black text-xs tracking-wide mb-3">
+            Only <span className="text-white text-sm bg-white/20 border border-white/20 px-2.5 py-1 rounded-lg ml-1 font-black">
+              {activeCombo.price}
+            </span>
+          </div>
+
+          <div className="flex flex-row gap-3 w-full max-w-70">
+            <button
+              onClick={() => navigate("/menu")}
+              className="flex-1 bg-white text-[#ec7719] font-black text-xs py-3.5 rounded-full hover:bg-orange-50 active:scale-95 transition-all shadow-md uppercase tracking-wider cursor-pointer"
+            >
+              Order Now
+            </button>
+            <button
+              onClick={() => navigate("/menu")}
+              className="flex-1 border border-white/40 text-white font-bold text-xs py-3.5 rounded-full hover:bg-white/10 active:scale-95 transition-all uppercase tracking-wider backdrop-blur-xs cursor-pointer"
+            >
+              View Menu
+            </button>
+          </div>
+
+          {/* Indicators */}
+          <div className="flex gap-2.5 mt-5">
+            {combos.map((combo, idx) => (
+              <button
+                key={combo.id}
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  currentIndex === idx
+                    ? "w-8 bg-white"
+                    : "w-2 bg-white/40 hover:bg-white/70"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          DESKTOP HERO VIEW (Original 2-Column Grid Layout)
+      ══════════════════════════════════════════ */}
+      <section
+        className="hidden md:flex relative w-full flex-col flex-1 items-center justify-center overflow-hidden bg-linear-to-br from-[#ec7719] to-[#c65e0a]"
         style={{ minHeight: "calc(100vh - 80px)" }}
       >
         {/* Subtle Background Pattern */}
         <div
           className="absolute inset-0 opacity-10"
           style={{
-            backgroundImage:
-              "radial-gradient(circle, white 2px, transparent 2px)",
+            backgroundImage: "radial-gradient(circle, white 2px, transparent 2px)",
             backgroundSize: "40px 40px",
           }}
         />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-white/10 rounded-full blur-[120px] pointer-events-none" />
-        
+
         <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-10 py-12 lg:py-0">
           
           {/* LEFT COLUMN: Animated Text */}
@@ -100,7 +216,7 @@ function Home() {
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               Now Serving · Valenzuela City
             </div>
-            
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCombo.id}
@@ -118,29 +234,29 @@ function Home() {
                     {activeCombo.subtitle}
                   </span>
                 </h1>
-                
-                <p className="mt-4 sm:mt-6 text-orange-50 text-base md:text-lg leading-relaxed max-w-md font-medium min-h-[60px]">
+
+                <p className="mt-4 sm:mt-6 text-orange-50 text-base md:text-lg leading-relaxed max-w-md font-medium min-h-15">
                   {activeCombo.desc}
                 </p>
-                
+
                 <div className="mt-8 flex flex-col xl:flex-row xl:items-center gap-6 pb-4">
                   <div className="flex flex-wrap gap-4">
                     <button
                       onClick={() => navigate("/menu")}
                       className="bg-white text-[#ec7719] font-black text-sm px-8 py-4 rounded-full
-                        hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl tracking-widest uppercase w-full sm:w-auto"
+                        hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl tracking-widest uppercase w-full sm:w-auto cursor-pointer"
                     >
                       Order Now
                     </button>
                     <button
                       onClick={() => navigate("/menu")}
                       className="border-2 border-white/40 text-white font-bold text-sm px-8 py-4 rounded-full
-                        hover:bg-white/15 hover:border-white hover:scale-105 active:scale-95 transition-all duration-300 tracking-widest uppercase backdrop-blur-sm w-full sm:w-auto text-center"
+                        hover:bg-white/15 hover:border-white hover:scale-105 active:scale-95 transition-all duration-300 tracking-widest uppercase backdrop-blur-sm w-full sm:w-auto text-center cursor-pointer"
                     >
                       View Menu
                     </button>
                   </div>
-                  
+
                   <div className="flex items-center justify-center sm:justify-start gap-3 text-orange-100">
                     <div className="w-8 h-px bg-orange-200/50 hidden xl:block" />
                     <p className="text-sm font-medium tracking-wide">
@@ -155,9 +271,8 @@ function Home() {
             </AnimatePresence>
           </div>
 
-          {/* RIGHT COLUMN: Animated Food Image */}
-          {/* Using a fixed responsive height container so absolute images don't collapse on mobile */}
-          <div className="relative w-full h-[320px] sm:h-[400px] lg:h-[600px] flex justify-center lg:justify-end items-center mt-2 lg:mt-0">
+          {/* RIGHT COLUMN: Food Image */}
+          <div className="relative w-full h-80 sm:h-100 lg:h-150 flex justify-center lg:justify-end items-center mt-2 lg:mt-0">
             <AnimatePresence mode="wait">
               <motion.img
                 key={activeCombo.id}
@@ -167,10 +282,10 @@ function Home() {
                 transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
                 src={activeCombo.image}
                 alt={activeCombo.title}
-                className="absolute w-[85%] sm:w-[70%] lg:w-[115%] max-w-[320px] sm:max-w-[450px] lg:max-w-none object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] z-10"
+                className="absolute w-[85%] sm:w-[70%] lg:w-[115%] max-w-[320px] sm:max-w-112.5 lg:max-w-none object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] z-10"
               />
             </AnimatePresence>
-            
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={`badge-${activeCombo.id}`}
@@ -189,13 +304,13 @@ function Home() {
           </div>
         </div>
 
-        {/* Carousel Dot Indicators */}
+        {/* Indicators */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-30">
           {combos.map((combo, idx) => (
             <button
               key={combo.id}
               onClick={() => setCurrentIndex(idx)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
+              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                 currentIndex === idx
                   ? "w-10 bg-white"
                   : "w-3 bg-white/40 hover:bg-white/70"
@@ -210,7 +325,7 @@ function Home() {
       ══════════════════════════════════════════ */}
       <section className="bg-[#faf5ef] py-20 md:py-32 px-6 relative z-20 overflow-hidden">
         {/* Subtle Background Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[500px] bg-white blur-[100px] pointer-events-none rounded-full" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-125 bg-white blur-[100px] pointer-events-none rounded-full" />
         
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Section Header */}
@@ -230,8 +345,8 @@ function Home() {
             
             {/* BOX 1: Wide Feature (Top Left) */}
             <div
-              className="md:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 
-              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-end relative overflow-hidden min-h-[250px] md:min-h-0"
+              className="md:col-span-2 bg-white rounded-4xl p-8 md:p-10 
+              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-end relative overflow-hidden min-h-62.5 md:min-h-0"
             >
               <HiOutlineLocationMarker className="text-[#ec7719] text-5xl md:text-6xl mb-6 opacity-90 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500" />
               <h3 className="text-gray-900 font-black text-3xl md:text-4xl uppercase tracking-tight mb-3 z-10">
@@ -242,14 +357,14 @@ function Home() {
                 artificial fillers. Just locally grown squash turned into your
                 new fast-food addiction.
               </p>
-              {/* Abstract decorative shape in the corner */}
-              <div className="absolute -right-10 -bottom-10 w-64 h-64 border-[40px] border-orange-50 rounded-full group-hover:border-[#ec7719]/10 transition-colors duration-500" />
+              {/* Decorative shape */}
+              <div className="absolute -right-10 -bottom-10 w-64 h-64 border-40 border-orange-50 rounded-full group-hover:border-[#ec7719]/10 transition-colors duration-500" />
             </div>
 
             {/* BOX 2: Square Feature (Top Right) */}
             <div
-              className="md:col-span-1 bg-white rounded-[2rem] p-8 
-              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-center items-center text-center relative min-h-[250px] md:min-h-0"
+              className="md:col-span-1 bg-white rounded-4xl p-8 
+              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-center items-center text-center relative min-h-62.5 md:min-h-0"
             >
               <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-5 group-hover:bg-[#ec7719] transition-colors duration-300">
                 <HiOutlineFire className="text-[#ec7719] text-3xl group-hover:text-white transition-colors duration-300" />
@@ -265,8 +380,8 @@ function Home() {
 
             {/* BOX 3: Square Feature (Bottom Left) */}
             <div
-              className="md:col-span-1 bg-white rounded-[2rem] p-8 
-              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-center items-center text-center relative min-h-[250px] md:min-h-0"
+              className="md:col-span-1 bg-white rounded-4xl p-8 
+              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-center items-center text-center relative min-h-62.5 md:min-h-0"
             >
               <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-5 group-hover:bg-[#ec7719] transition-colors duration-300">
                 <HiOutlineHeart className="text-[#ec7719] text-3xl group-hover:text-white transition-colors duration-300" />
@@ -282,15 +397,13 @@ function Home() {
 
             {/* BOX 4: CTA Wide Block (Bottom Right) */}
             <div
-              className="md:col-span-2 bg-[#ec7719] rounded-[2rem] p-8 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8 
-              hover:shadow-[0_10px_40px_rgba(236,119,25,0.4)] hover:-translate-y-1 transition-all duration-300 min-h-[250px] md:min-h-0 relative overflow-hidden"
+              className="md:col-span-2 bg-[#ec7719] rounded-4xl p-8 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8 
+              hover:shadow-[0_10px_40px_rgba(236,119,25,0.4)] hover:-translate-y-1 transition-all duration-300 min-h-62.5 md:min-h-0 relative overflow-hidden"
             >
-              {/* Texture overlay for the orange box */}
               <div
                 className="absolute inset-0 opacity-10"
                 style={{
-                  backgroundImage:
-                    "radial-gradient(circle, white 2px, transparent 2px)",
+                  backgroundImage: "radial-gradient(circle, white 2px, transparent 2px)",
                   backgroundSize: "20px 20px",
                 }}
               />
@@ -306,7 +419,7 @@ function Home() {
               <button
                 onClick={() => navigate("/menu")}
                 className="relative z-10 w-full sm:w-auto bg-white text-[#ec7719] font-black text-sm md:text-base px-8 py-4 rounded-full 
-                  hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shrink-0 shadow-xl"
+                  hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shrink-0 shadow-xl cursor-pointer"
               >
                 View Menu
               </button>

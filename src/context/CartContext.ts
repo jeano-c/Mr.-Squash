@@ -20,6 +20,7 @@ export interface CartContextType {
   updateQty: (id: number, delta: number) => void;
   cartCount: number;
   cartTotal: number;
+  clearCart: () => void;
 }
 // ─────────────────────────────────────────────────────────────────────────────
 

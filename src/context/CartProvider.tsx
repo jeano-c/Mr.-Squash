@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { CartContext } from "./CartContext";
 import type { MenuItem, CartItem } from "./CartContext";
@@ -8,7 +8,21 @@ interface CartProviderProps {
 }
 
 export function CartProvider({ children }: CartProviderProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem("mrsquash_cart");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse cart items from localStorage", e);
+      }
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("mrsquash_cart", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   function addToCart(item: MenuItem) {
     setCartItems((prev) => {
@@ -34,6 +48,10 @@ export function CartProvider({ children }: CartProviderProps) {
     );
   }
 
+  function clearCart() {
+    setCartItems([]);
+  }
+
   const cartCount = cartItems.reduce((sum, i) => sum + i.qty, 0);
   const cartTotal = cartItems.reduce((sum, i) => sum + i.price * i.qty, 0);
 
@@ -46,6 +64,7 @@ export function CartProvider({ children }: CartProviderProps) {
         updateQty,
         cartCount,
         cartTotal,
+        clearCart,
       }}
     >
       {children}

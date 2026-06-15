@@ -52,20 +52,20 @@ function AboutUs() {
   return (
     <div className="min-h-screen bg-[#faf5ef] selection:bg-[#ec7719] selection:text-white font-sans text-gray-900 overflow-hidden">
       {/* ══════════════════════════════════════════
-         HERO SECTION (Curvy & Energetic)
+         HERO SECTION (Curvy & Energetic - Sized Down)
       ══════════════════════════════════════════ */}
-      <section className="bg-[#ec7719] rounded-b-[3rem] md:rounded-b-[5rem] pt-28 md:pt-36 pb-24 md:pb-32 px-6 text-center relative shadow-xl z-20">
+      <section className="bg-[#ec7719] rounded-b-[2.5rem] md:rounded-b-[3.5rem] pt-20 pb-16 md:pt-24 md:pb-18 px-6 text-center relative shadow-xl z-20">
         <motion.div
-          animate={{ y: [0, -10, 0] }}
+          animate={{ y: [0, -8, 0] }}
           transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-          className="absolute top-20 left-10 text-orange-300 text-5xl opacity-50 hidden md:block"
+          className="absolute top-12 left-10 text-orange-300 text-4xl opacity-30 hidden md:block"
         >
           <FaLeaf />
         </motion.div>
         <motion.div
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-          className="absolute bottom-20 right-16 text-orange-300 text-6xl opacity-50 hidden md:block"
+          className="absolute bottom-12 right-16 text-orange-300 text-5xl opacity-30 hidden md:block"
         >
           <FaFire />
         </motion.div>
@@ -74,29 +74,27 @@ function AboutUs() {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="max-w-4xl mx-auto relative z-10"
+          className="max-w-3xl mx-auto relative z-10"
         >
           <motion.div
             variants={bouncyFadeUp}
-            className="inline-block bg-white text-[#ec7719] font-black text-[10px] md:text-xs uppercase tracking-widest px-5 py-2 rounded-full mb-6 shadow-md rotate-2"
+            className="inline-block bg-white text-[#ec7719] font-black text-[9px] md:text-2xs uppercase tracking-widest px-4.5 py-1.5 rounded-full mb-4 shadow-md rotate-2 border-2 border-gray-900"
           >
             Fresh out the fryer!
           </motion.div>
 
           <motion.h1
             variants={bouncyFadeUp}
-            className="font-black text-5xl sm:text-7xl md:text-8xl tracking-tight text-white leading-[0.9] mb-6 drop-shadow-md"
+            className="font-black text-4xl sm:text-5xl md:text-6xl tracking-tight text-white leading-tight mb-4 drop-shadow-md"
           >
-            The Crunch <br />
-            You Deserve.
+            The Crunch You Deserve
           </motion.h1>
 
           <motion.p
             variants={bouncyFadeUp}
-            className="text-orange-50 text-base md:text-xl font-bold max-w-2xl mx-auto leading-relaxed"
+            className="text-orange-100 text-xs md:text-sm font-semibold max-w-xl mx-auto leading-relaxed"
           >
-            We are redefining comfort food. No shortcuts. Just affordable,
-            delicious meals starring 100% real Philippine Calabasa.
+            We are redefining comfort food. No shortcuts. Just affordable, delicious meals starring 100% real Philippine Calabasa.
           </motion.p>
         </motion.div>
       </section>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TiShoppingCart } from "react-icons/ti";
 import { HiMenuAlt3, HiX, HiPlus, HiMinus, HiTrash } from "react-icons/hi";
 import logo from "../assets/logo.png";
+import mrLogo from "../assets/mr.png";
 import { useNavigate, useLocation } from "react-router";
 import { useCart } from "../context/CartContext";
 
@@ -61,12 +62,12 @@ function NavBar() {
             />
             <div className="absolute inset-0 rounded-full bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-300" />
           </div>
-          <p
-            className={`capitalize font-bold font-sans text-white tracking-tight drop-shadow-sm transition-all duration-300
-            ${scrolled ? "text-lg md:text-xl" : "text-xl md:text-2xl"}`}
-          >
-            Mr. Squash
-          </p>
+          <img
+            className={`object-contain transition-all duration-300 drop-shadow-sm
+              ${scrolled ? "h-6 md:h-7" : "h-8 md:h-9"}`}
+            src={mrLogo}
+            alt="Mr. Squash"
+          />
         </div>
 
         {/* Desktop Nav Links */}
@@ -134,7 +135,7 @@ function NavBar() {
 
       {/* ── Mobile Menu Drawer (Left Side) ──────────────────────── */}
       <div
-        className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-[#faf5ef] z-[60] shadow-2xl
+        className={`fixed top-0 left-0 h-full w-[80%] max-w-sm bg-[#faf5ef] z-60 shadow-2xl
           flex flex-col transition-transform duration-300 ease-in-out md:hidden
           ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
@@ -183,7 +184,7 @@ function NavBar() {
 
       {/* ── Cart Sidebar (Right Side) ───────────────────────────── */}
       <div
-        className={`fixed top-0 right-0 h-full w-[90%] max-w-sm bg-white z-[60] shadow-2xl
+        className={`fixed top-0 right-0 h-full w-[90%] max-w-sm bg-white z-60 shadow-2xl
           flex flex-col transition-transform duration-300 ease-in-out
           ${cartOpen ? "translate-x-0" : "translate-x-full"}`}
       >
@@ -285,8 +286,12 @@ function NavBar() {
               </span>
             </div>
             <button
+              onClick={() => {
+                setCartOpen(false);
+                navigate("/checkout");
+              }}
               className="w-full bg-[#ec7719] hover:bg-[#d06710] active:scale-95
-              text-white font-black text-base py-3.5 rounded-xl transition-all duration-200 shadow-md"
+              text-white font-black text-base py-3.5 rounded-xl transition-all duration-200 shadow-md cursor-pointer"
             >
               Place Order
             </button>

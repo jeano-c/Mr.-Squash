@@ -7,6 +7,7 @@ import { CartProvider } from "./context/CartProvider";
 import Career from "./pages/Career";
 import AboutUs from "./pages/AboutUs";
 import Footer from "./components/Footer";
+import Checkout from "./pages/Checkout";
 
 
 function Layout() {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "/menu", element: <Menu /> },
       { path: "/career", element: <Career /> },
       { path: "/about", element: <AboutUs /> },
+      { path: "/checkout", element: <Checkout /> },
     ],
   },
 ]);
