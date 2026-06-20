@@ -164,8 +164,8 @@ function Footer() {
               Opening Hours
             </p>
             <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-gray-300 flex justify-between items-center">
-              <span>Mon – Sat</span>
-              <span className="text-white font-bold">11am – 9pm</span>
+              <span>Mon - Sat</span>
+              <span className="text-white font-bold">10:00am - 10:00pm</span>
             </div>
           </div>
         </div>

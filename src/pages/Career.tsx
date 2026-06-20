@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import {
   HiOutlineLocationMarker,
@@ -18,49 +18,73 @@ import {
   FaEnvelope,
   FaPhoneAlt,
   FaLink,
+  FaTimes,
+  FaSearchPlus,
 } from "react-icons/fa";
+
+// ── Import Job Flyer Images ──────────────────────────────────────────────────
+import supervisorImg from "../assets/jobs/1_20260620_130809_0000.png";
+import accountantImg from "../assets/jobs/2_20260620_130809_0001.png";
+import kitchenImg from "../assets/jobs/3_20260620_130809_0002.png";
+import serviceImg from "../assets/jobs/4_20260620_130809_0003.png";
+import cashierImg from "../assets/jobs/5_20260620_130809_0004.png";
 
 // ── Job Data ─────────────────────────────────────────────────────────────────
 const JOBS = [
   {
     id: 1,
-    title: "Content Creator",
-    department: "Marketing",
+    title: "Supervisor",
+    department: "Operations",
     type: "Full-time",
-    location: "Valenzuela, PH (Hybrid)",
-    desc: "Drive brand awareness by conceptualizing, shooting, and editing short-form video content across all social channels. Showcase our squash-infused goodness to the world!",
-    pay: "₱25k - ₱35k / mo",
-    requirements: "Experience in TikTok/Reels editing, passion for food styling, and a portfolio of highly engaging short-form videos."
+    location: "Valenzuela Flagship",
+    desc: "Lead daily store operations, coordinate staff schedules, maintain food safety standards, and drive team synergy to deliver the ultimate calabasa crunch experience.",
+    pay: "₱22k - ₱30k / mo",
+    requirements: "At least College Undergrad of any Business-related Program. Must have at least 1-2 years experience in supervisory role in the food service or retail industry. Computer literate, strong leadership, excellent communication, strong problem-solving and decision-making, familiar with basic marketing strategies.",
+    image: supervisorImg
   },
   {
     id: 2,
-    title: "Digital Marketing Specialist",
-    department: "Marketing",
-    type: "Internship",
-    location: "Valenzuela, PH (Remote)",
-    desc: "Assist in managing paid ad campaigns, tracking performance metrics, and brainstorming digital growth strategies to get Mr. Squash trending.",
-    pay: "Paid Allowance + Bonuses",
-    requirements: "Basic SEO/SEM knowledge, great copywriting skills, and currently taking Marketing, Communications, or related course."
+    title: "Accountant",
+    department: "Finance",
+    type: "Full-time",
+    location: "Valenzuela Office (Hybrid)",
+    desc: "Manage store bookkeeping, handle financial reporting, budgeting, and auditing processes. Maintain accurate ledger records and ensure compliance with financial standards.",
+    pay: "₱25k - ₱35k / mo",
+    requirements: "Bachelor's Degree in Accountancy or related course. 2-3 years experience in accounting, bookkeeping, or finance support. Proficient in Excel and accounting software. Strong knowledge of financial reporting, budgeting, and auditing. Able to thrive in a deadline-driven environment.",
+    image: accountantImg
   },
   {
     id: 3,
-    title: "Kitchen Operations Lead",
+    title: "Kitchen Staff",
     department: "Operations",
-    type: "Full-time",
+    type: "Full-time / Part-time",
     location: "Valenzuela Flagship",
-    desc: "Oversee daily kitchen preparation, inventory management, and high-standard quality control in a fast-paced environment. Master the art of the perfect Calabasa crunch!",
+    desc: "Master the art of the perfect Calabasa crunch! Oversee daily kitchen preparation, frying, inventory management, and maintaining food safety standards.",
     pay: "₱180 - ₱220 / hr + Tips",
-    requirements: "2+ years kitchen leadership experience, food safety certification, high energy, and a solid team-player mindset."
+    requirements: "Must pass Health Certificate for Food Handlers. Has experience in kitchen or similar role. At least a high school graduate; culinary training is advantage. Excellent customer service and communication skills. Knowledge of food safety and sanitation standards. Ability to multi-task and work under pressure.",
+    image: kitchenImg
   },
   {
     id: 4,
-    title: "Front of House Associate",
+    title: "Service Crew",
     department: "Operations",
-    type: "Part-time",
+    type: "Full-time / Part-time",
     location: "Valenzuela Flagship",
-    desc: "Deliver exceptional client service, manage point-of-sale transactions, and maintain front-of-house hospitality standards. Bring the good vibes to our hungry customers!",
+    desc: "Deliver exceptional service, manage customer orders, serve delicious combo meals, and maintain a vibrant, clean front-of-house atmosphere.",
     pay: "₱100 - ₱120 / hr + Tips",
-    requirements: "Friendly demeanor, excellent communication, ability to handle cash registers, and flexible working hours."
+    requirements: "At least high school graduate. Can work flexible hours, including weekends or holidays. Good communication and interpersonal skills. Excellent customer service. Basic knowledge of food safety. Ability to multi-task and work under pressure.",
+    image: serviceImg
+  },
+  {
+    id: 5,
+    title: "Cashier",
+    department: "Operations",
+    type: "Full-time / Part-time",
+    location: "Valenzuela Flagship",
+    desc: "Handle transactions, manage cash register operations, count drawers, and ensure high levels of accuracy and customer satisfaction during checkout.",
+    pay: "₱100 - ₱120 / hr",
+    requirements: "At least College Undergrad of any Business-related Program. Experience with cash handling. Attention to details and accuracy in handling money. Ability to multi-task and handle multiple transactions simultaneously. Trustworthy, honest, strong numerical skills, computer literate.",
+    image: cashierImg
   },
 ];
 
@@ -101,6 +125,7 @@ function Career() {
   const [appliedIds, setAppliedIds] = useState<number[]>([]);
   const [selectedDept, setSelectedDept] = useState("All");
   const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // Form Fields
   const [name, setName] = useState("");
@@ -325,16 +350,13 @@ function Career() {
                         setSelectedJob(job);
                         setIsMobileDetailOpen(true);
                       }}
-                      className={`rounded-4xl border-4 p-6 flex flex-col justify-between transition-all duration-200 group cursor-pointer ${activeBorder} ${activeShadow} ${activeBg} hover:-translate-y-0.5`}
+                      className={`rounded-4xl border-4 p-6 flex flex-col transition-all duration-200 group cursor-pointer ${activeBorder} ${activeShadow} ${activeBg} hover:-translate-y-0.5`}
                     >
                       <div>
                         {/* Meta Tags Row */}
                         <div className="flex items-center gap-2 flex-wrap mb-4">
                           <span className="text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded bg-gray-900 text-white border border-gray-900 shadow-sm leading-none">
                             {job.department}
-                          </span>
-                          <span className="text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded bg-[#fef08a] text-gray-900 border-2 border-gray-900 shadow-sm leading-none">
-                            {job.type}
                           </span>
                           {isApplied && (
                             <span className="text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded bg-green-500 text-white border border-green-600 shadow-sm leading-none">
@@ -352,12 +374,6 @@ function Career() {
                           <HiOutlineLocationMarker className="text-[#ec7719] text-sm" />
                           {job.location}
                         </p>
-                      </div>
-
-                      {/* Bottom Info Row */}
-                      <div className="pt-4 mt-4 border-t-2 border-gray-100/50 flex items-center justify-between">
-                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Pay Scale</span>
-                        <span className="text-xs font-black text-[#ec7719] leading-none">{job.pay}</span>
                       </div>
                     </motion.div>
                   );
@@ -380,51 +396,49 @@ function Career() {
                   Back to Positions
                 </button>
 
-                {/* Detail Header */}
-                <div className="flex flex-wrap justify-between items-start gap-4 pb-6 border-b-2 border-dashed border-gray-100">
-                  <div>
+                {/* 1. Job Poster or Text Details */}
+                {selectedJob.image ? (
+                  <div className="flex flex-col items-center justify-center mb-8">
+                    <div
+                      className="relative group overflow-hidden rounded-3xl border-4 border-gray-900 shadow-[6px_6px_0px_#111] cursor-pointer max-w-sm w-full bg-gray-50 aspect-[3/4]"
+                      onClick={() => setIsLightboxOpen(true)}
+                    >
+                      <img
+                        src={selectedJob.image}
+                        alt={`${selectedJob.title} Hiring Flyer`}
+                        className="w-full h-full object-cover mx-auto transition-transform duration-300 group-hover:scale-[1.02]"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-200">
+                        <span className="bg-white text-gray-900 px-4.5 py-2.5 rounded-xl font-black uppercase tracking-wider text-xs border-2 border-gray-900 shadow-[3px_3px_0px_#111] flex items-center gap-2">
+                          <FaSearchPlus className="text-sm" /> Zoom Flyer
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-2xs text-gray-400 font-bold mt-3 flex items-center gap-1.5">
+                      💡 Click the image to view the hiring poster in fullscreen
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mb-8">
                     <span className="text-[10px] font-black text-[#ec7719] uppercase tracking-widest block mb-1">
                       Job Specifications
                     </span>
-                    <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight leading-none">
+                    <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight leading-none mb-3">
                       {selectedJob.title}
                     </h3>
-                    
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 text-xs font-semibold text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <HiOutlineLocationMarker className="text-[#ec7719]" />
-                        {selectedJob.location}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <HiOutlineClock className="text-[#ec7719]" />
-                        {selectedJob.type}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <HiOutlineCurrencyDollar className="text-[#ec7719] text-sm" />
-                        {selectedJob.pay}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Detail Body */}
-                <div className="py-6 space-y-6">
-                  <div>
-                    <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Role Overview</h4>
-                    <p className="text-sm font-semibold text-gray-600 leading-relaxed">
+                    <p className="text-sm font-semibold text-gray-600 leading-relaxed mb-4">
                       {selectedJob.desc}
                     </p>
+                    <div className="bg-[#faf5ef] p-5 rounded-2xl border-2 border-gray-900/10">
+                      <h4 className="text-xs font-black text-[#ec7719] uppercase tracking-widest mb-1.5">Core Requirements</h4>
+                      <p className="text-xs font-semibold text-gray-600 leading-relaxed">
+                        {selectedJob.requirements}
+                      </p>
+                    </div>
                   </div>
+                )}
 
-                  <div className="bg-[#faf5ef] p-5 rounded-2xl border-2 border-gray-900/10">
-                    <h4 className="text-xs font-black text-[#ec7719] uppercase tracking-widest mb-1.5">Core Requirements</h4>
-                    <p className="text-xs font-semibold text-gray-600 leading-relaxed">
-                      {selectedJob.requirements}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Embedded Application Form / Success Alert */}
+                {/* 2. Embedded Application Form / Success Alert */}
                 <div className="pt-6 border-t-2 border-dashed border-gray-100">
                   {hasApplied ? (
                     /* Success Alert */
@@ -578,7 +592,8 @@ function Career() {
                   location: "Valenzuela Flagship / Remote",
                   desc: "Tell us how you can help us grow the Mr. Squash kingdom!",
                   pay: "Based on role & value",
-                  requirements: "High energy, passion for our mission, unique talent."
+                  requirements: "High energy, passion for our mission, unique talent.",
+                  image: ""
                 });
                 setIsMobileDetailOpen(true);
               }}
@@ -589,6 +604,43 @@ function Career() {
           </div>
         </div>
       </section>
+
+      {/* ── LIGHTBOX MODAL FOR ZOOMING FLYER ── */}
+      <AnimatePresence>
+        {isLightboxOpen && selectedJob?.image && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4 sm:p-6"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              className="relative max-w-lg max-h-[90vh] flex flex-col items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setIsLightboxOpen(false)}
+                className="absolute -top-12 right-0 bg-white text-gray-900 w-10 h-10 rounded-full flex items-center justify-center border-2 border-gray-900 shadow-[2px_2px_0px_#111] hover:bg-gray-100 transition-colors cursor-pointer z-10"
+              >
+                <FaTimes className="text-lg" />
+              </button>
+              <img
+                src={selectedJob.image}
+                alt={`${selectedJob.title} Fullscreen Flyer`}
+                className="max-w-full max-h-[80vh] object-contain rounded-2xl border-4 border-gray-900 shadow-[6px_6px_0px_#111] bg-white animate-fade-in"
+              />
+              <p className="text-white text-xs font-black uppercase tracking-widest mt-4 bg-gray-900/80 px-4 py-2 rounded-full border-2 border-gray-800">
+                {selectedJob.title} Hiring Flyer
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
