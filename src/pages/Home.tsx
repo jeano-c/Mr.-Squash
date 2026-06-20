@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import localFarmersImg from "../assets/posters/18_20260620_083744_0001.webp";
 import billboardImg from "../assets/posters/26_20260620_083745_0012.webp";
 
-// Images
-import combo1 from "../assets/combo1.png";
-import combo2 from "../assets/combo2.png";
-import combo3 from "../assets/combo3.png";
-import combo4 from "../assets/combo4.png";
+// Import food promo posters
+import burgerPromo from "../assets/posters/27_20260620_083744_0006.webp";
+import friesPromo from "../assets/posters/28_20260620_083744_0007.webp";
+import pumpletPromo from "../assets/posters/29_20260620_083744_0008.webp";
+import krispyPromo from "../assets/posters/30_20260620_083745_0009.webp";
+import kalaboomPromo from "../assets/posters/31_20260620_083745_0010.webp";
+import kalabitesPromo from "../assets/posters/32_20260620_083745_0011.webp";
 
 // Icons
 import {
@@ -17,60 +21,34 @@ import {
   HiOutlineHeart,
   HiOutlineZoomIn,
   HiX,
+  HiChevronLeft,
+  HiChevronRight,
 } from "react-icons/hi";
 
-// Combo Data
-const combos = [
-  {
-    id: 1,
-    title: "COMBO",
-    subtitle: "1",
-    desc: "Kala-Boom with Drink and Burger.",
-    price: "₱164",
-    image: combo1,
-    badge: "🔥 Best Seller",
-  },
-  {
-    id: 2,
-    title: "COMBO",
-    subtitle: "2",
-    desc: "Pump-let Chicken with Drink and Kala-Bites.",
-    price: "₱164",
-    image: combo2,
-    badge: "✨ Fan Favorite",
-  },
-  {
-    id: 3,
-    title: "COMBO",
-    subtitle: "3",
-    desc: "Krispy Chickalabasa with Drink and Fries.",
-    price: "₱144",
-    image: combo3,
-    badge: "💯 Great Value",
-  },
-  {
-    id: 4,
-    title: "COMBO",
-    subtitle: "4",
-    desc: "Drink, Burger, Kala-Bites, and Fries.",
-    price: "₱184",
-    image: combo4,
-    badge: "👑 The Feast",
-  },
+const PROMOS = [
+  { title: "Krispy Chickalabasa", image: krispyPromo },
+  { title: "Pump-let Chicken", image: pumpletPromo },
+  { title: "Kala-Boom", image: kalaboomPromo },
+  { title: "Squash Burger", image: burgerPromo },
+  { title: "Squash Fries", image: friesPromo },
+  { title: "Kala-Bites", image: kalabitesPromo },
 ];
 
 function Home() {
   const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [activePoster, setActivePoster] = useState<string | null>(null);
 
-  // Auto-play carousel every 5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % combos.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+  const [promoEmblaRef, promoEmblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+      containScroll: "trimSnaps",
+    },
+    [Autoplay({ delay: 4000, stopOnInteraction: true })]
+  );
+
+  const scrollPrevPromo = useCallback(() => promoEmblaApi && promoEmblaApi.scrollPrev(), [promoEmblaApi]);
+  const scrollNextPromo = useCallback(() => promoEmblaApi && promoEmblaApi.scrollNext(), [promoEmblaApi]);
 
   // Keyboard listener for lightbox escape
   useEffect(() => {
@@ -82,137 +60,16 @@ function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activePoster]);
 
-  const activeCombo = combos[currentIndex];
-
   return (
     <div className="min-h-screen bg-[#faf5ef] selection:bg-white selection:text-[#ec7719] flex flex-col overflow-x-hidden">
       
       {/* ══════════════════════════════════════════
-          MOBILE HERO VIEW (No-Scroll Viewport Height)
+          HERO PROMOTIONS SECTION
       ══════════════════════════════════════════ */}
-      <section
-        className="flex md:hidden relative w-full h-[calc(100dvh-56px)] overflow-hidden bg-linear-to-br from-[#ec7719] to-[#c65e0a] flex-col justify-between px-5 py-6 text-center shrink-0"
-      >
+      <section className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-linear-to-br from-[#ec7719] to-[#c65e0a] py-16 md:py-24 px-6 select-none shrink-0 border-b-2 border-gray-900/10">
         {/* Subtle Background Pattern */}
         <div
           className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, white 2px, transparent 2px)",
-            backgroundSize: "30px 30px",
-          }}
-        />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-white/10 rounded-full blur-[100px] pointer-events-none" />
-
-        {/* 1. Header Information */}
-        <div className="relative z-10 flex flex-col items-center pt-1">
-          <div
-            className="inline-flex items-center gap-1.5 bg-white/15 border border-white/20 text-white
-            text-[9px] font-black tracking-wider px-3.5 py-1.5 rounded-full uppercase mb-4 shadow-sm backdrop-blur-xs"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            Now Serving · Valenzuela City
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCombo.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col items-center"
-            >
-              <h1 className="font-black uppercase tracking-tight leading-none text-white text-5xl drop-shadow-md">
-                {activeCombo.title}{" "}
-                <span className="text-yellow-200">{activeCombo.subtitle}</span>
-              </h1>
-              <p className="mt-2 text-orange-50 text-xs font-semibold leading-relaxed max-w-70">
-                {activeCombo.desc}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* 2. Middle Food Image Section */}
-        <div className="relative z-10 flex-1 flex items-center justify-center py-2 select-none">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={activeCombo.id}
-              initial={{ opacity: 0, scale: 0.85, rotate: -3 }}
-              animate={{ opacity: 1, scale: 1.05, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0.85, rotate: 3 }}
-              transition={{ duration: 0.4, type: "spring", bounce: 0.25 }}
-              src={activeCombo.image}
-              alt={activeCombo.title}
-              className="w-auto h-[24vh] max-h-46.25 min-h-30 object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.5)]"
-            />
-          </AnimatePresence>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`badge-mobile-${activeCombo.id}`}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
-              className="absolute top-[12%] right-[8%] bg-white rounded-xl px-2.5 py-1.5 shadow-lg border border-orange-100 rotate-6"
-            >
-              <p className="text-[#ec7719] font-black text-[9px] uppercase tracking-wider">
-                {activeCombo.badge}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* 3. Action and Price Footer */}
-        <div className="relative z-10 flex flex-col items-center pb-1">
-          <div className="text-orange-50 font-black text-xs tracking-wide mb-3">
-            Only <span className="text-white text-sm bg-white/20 border border-white/20 px-2.5 py-1 rounded-lg ml-1 font-black">
-              {activeCombo.price}
-            </span>
-          </div>
-
-          <div className="flex flex-row gap-3 w-full max-w-70">
-            <button
-              onClick={() => navigate("/menu")}
-              className="flex-1 bg-white text-[#ec7719] font-black text-xs py-3.5 rounded-full hover:bg-orange-50 active:scale-95 transition-all shadow-md uppercase tracking-wider cursor-pointer"
-            >
-              Order Now
-            </button>
-            <button
-              onClick={() => navigate("/menu")}
-              className="flex-1 border border-white/40 text-white font-bold text-xs py-3.5 rounded-full hover:bg-white/10 active:scale-95 transition-all uppercase tracking-wider backdrop-blur-xs cursor-pointer"
-            >
-              View Menu
-            </button>
-          </div>
-
-          {/* Indicators */}
-          <div className="flex gap-2.5 mt-5">
-            {combos.map((combo, idx) => (
-              <button
-                key={combo.id}
-                onClick={() => setCurrentIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  currentIndex === idx
-                    ? "w-8 bg-white"
-                    : "w-2 bg-white/40 hover:bg-white/70"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          DESKTOP HERO VIEW (Original 2-Column Grid Layout)
-      ══════════════════════════════════════════ */}
-      <section
-        className="hidden md:flex relative w-full flex-col flex-1 items-center justify-center overflow-hidden bg-linear-to-br from-[#ec7719] to-[#c65e0a]"
-        style={{ minHeight: "calc(100vh - 80px)" }}
-      >
-        {/* Subtle Background Pattern */}
-        <div
-          className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: "radial-gradient(circle, white 2px, transparent 2px)",
             backgroundSize: "40px 40px",
@@ -220,121 +77,86 @@ function Home() {
         />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-white/10 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-10 py-12 lg:py-0">
+        <div className="max-w-7xl w-full mx-auto relative z-10">
           
-          {/* LEFT COLUMN: Animated Text */}
-          <div className="w-full relative z-20 flex flex-col justify-center pt-4 lg:pt-0">
+          {/* Header Row */}
+          <div className="text-center mb-10 md:mb-12 flex flex-col items-center">
+            {/* Now Serving Badge */}
             <div
               className="inline-flex items-center gap-2 bg-white/15 border border-white/20 text-white w-max
-              text-[10px] md:text-xs font-black tracking-[0.2em] px-4 py-1.5 rounded-full uppercase mb-4 md:mb-6 shadow-sm backdrop-blur-sm"
+              text-[10px] md:text-xs font-black tracking-[0.25em] px-4.5 py-1.5 rounded-full uppercase mb-5 shadow-sm backdrop-blur-sm"
             >
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               Now Serving · Valenzuela City
             </div>
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCombo.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="flex flex-col"
-              >
-                <h1 className="font-black uppercase tracking-tighter select-none leading-none flex flex-col">
-                  <span className="text-white text-[16vw] sm:text-[110px] lg:text-[130px] xl:text-[150px] drop-shadow-lg">
-                    {activeCombo.title}
-                  </span>
-                  <span className="text-orange-200/90 text-[18vw] sm:text-[140px] lg:text-[170px] xl:text-[200px] -mt-2 sm:-mt-8 lg:-mt-12 ml-1 sm:ml-2">
-                    {activeCombo.subtitle}
-                  </span>
-                </h1>
+            <h1 className="font-black text-4xl md:text-6xl text-white tracking-tighter uppercase leading-none drop-shadow-md">
+              Latest <span className="text-yellow-200">Sales</span>
+            </h1>
+            <p className="text-orange-50 font-bold mt-4 max-w-lg mx-auto text-sm md:text-base leading-relaxed">
+              Crunchy, squashy goodness at unbeatable prices. Click any poster to zoom in!
+            </p>
+          </div>
 
-                <p className="mt-4 sm:mt-6 text-orange-50 text-base md:text-lg leading-relaxed max-w-md font-medium min-h-15">
-                  {activeCombo.desc}
-                </p>
+          {/* Embla Carousel Track */}
+          <div className="overflow-hidden px-2 sm:px-4" ref={promoEmblaRef}>
+            <div className="flex -ml-4">
+              {PROMOS.map((promo, idx) => (
+                <div
+                  key={idx}
+                  className="pl-4 flex-[0_0_80%] sm:flex-[0_0_45%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%] min-w-0"
+                >
+                  <div
+                    onClick={() => setActivePoster(promo.image)}
+                    className="group relative aspect-[4/5] w-full overflow-hidden rounded-[2.5rem] border-[3px] border-gray-900 bg-gray-900 shadow-[4px_4px_0px_#111] hover:shadow-[6px_6px_0px_#fff] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+                  >
+                    {/* Blur background */}
+                    <img
+                      src={promo.image}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover blur-xs opacity-35 scale-105"
+                      loading="lazy"
+                    />
+                    {/* Foreground fitted image */}
+                    <img
+                      src={promo.image}
+                      alt={promo.title}
+                      className="absolute inset-0 w-full h-full object-contain p-1 transition-transform duration-500 group-hover:scale-[1.02]"
+                      loading="lazy"
+                    />
 
-                <div className="mt-8 flex flex-col xl:flex-row xl:items-center gap-6 pb-4">
-                  <div className="flex flex-wrap gap-4">
-                    <button
-                      onClick={() => navigate("/menu")}
-                      className="bg-white text-[#ec7719] font-black text-sm px-8 py-4 rounded-full
-                        hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl tracking-widest uppercase w-full sm:w-auto cursor-pointer"
-                    >
-                      Order Now
-                    </button>
-                    <button
-                      onClick={() => navigate("/menu")}
-                      className="border-2 border-white/40 text-white font-bold text-sm px-8 py-4 rounded-full
-                        hover:bg-white/15 hover:border-white hover:scale-105 active:scale-95 transition-all duration-300 tracking-widest uppercase backdrop-blur-sm w-full sm:w-auto text-center cursor-pointer"
-                    >
-                      View Menu
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-center sm:justify-start gap-3 text-orange-100">
-                    <div className="w-8 h-px bg-orange-200/50 hidden xl:block" />
-                    <p className="text-sm font-medium tracking-wide">
-                      Only{" "}
-                      <span className="font-black text-white text-xl ml-1">
-                        {activeCombo.price}
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-xs">
+                      <span className="bg-white/95 text-gray-900 px-4 py-2 rounded-full font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md border-2 border-gray-900">
+                        <HiOutlineZoomIn className="text-base text-[#ec7719]" />
+                        Zoom Ad
                       </span>
-                    </p>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              ))}
+            </div>
           </div>
 
-          {/* RIGHT COLUMN: Food Image */}
-          <div className="relative w-full h-80 sm:h-100 lg:h-150 flex justify-center lg:justify-end items-center mt-2 lg:mt-0">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={activeCombo.id}
-                initial={{ opacity: 0, x: 100, scale: 0.9, rotate: 5 }}
-                animate={{ opacity: 1, x: 0, scale: 1.1, rotate: 0 }}
-                exit={{ opacity: 0, x: -100, scale: 0.9, rotate: -5 }}
-                transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-                src={activeCombo.image}
-                alt={activeCombo.title}
-                className="absolute w-[85%] sm:w-[70%] lg:w-[115%] max-w-[320px] sm:max-w-112.5 lg:max-w-none object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] z-10"
-              />
-            </AnimatePresence>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`badge-${activeCombo.id}`}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0 }}
-                transition={{ delay: 0.2, duration: 0.4, type: "spring" }}
-                className="absolute top-[5%] lg:top-[15%] left-[5%] lg:left-[-5%] bg-white rounded-2xl px-4 py-2 lg:px-5 lg:py-3
-                  shadow-2xl -rotate-6 flex items-center gap-2 select-none z-20"
-              >
-                <p className="text-[#ec7719] font-black text-xs lg:text-sm uppercase tracking-widest">
-                  {activeCombo.badge}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Indicators */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-          {combos.map((combo, idx) => (
+          {/* Centered Controls underneath the scrolling row */}
+          <div className="flex items-center justify-center gap-6 mt-10">
             <button
-              key={combo.id}
-              onClick={() => setCurrentIndex(idx)}
-              className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                currentIndex === idx
-                  ? "w-10 bg-white"
-                  : "w-3 bg-white/40 hover:bg-white/70"
-              }`}
-            />
-          ))}
+              onClick={scrollPrevPromo}
+              className="w-12 h-12 rounded-full border-2 border-white/60 bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-[#ec7719] hover:border-white transition-all shadow-[3px_3px_0px_rgba(255,255,255,0.2)] active:translate-y-[1px] active:shadow-none cursor-pointer backdrop-blur-sm"
+              aria-label="Previous promotion"
+            >
+              <HiChevronLeft className="text-2xl" />
+            </button>
+            <button
+              onClick={scrollNextPromo}
+              className="w-12 h-12 rounded-full border-2 border-white/60 bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-[#ec7719] hover:border-white transition-all shadow-[3px_3px_0px_rgba(255,255,255,0.2)] active:translate-y-[1px] active:shadow-none cursor-pointer backdrop-blur-sm"
+              aria-label="Next promotion"
+            >
+              <HiChevronRight className="text-2xl" />
+            </button>
+          </div>
         </div>
       </section>
-
 
 
       {/* ══════════════════════════════════════════

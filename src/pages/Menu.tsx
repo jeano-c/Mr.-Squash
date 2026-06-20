@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { HiPlus, HiCheck } from "react-icons/hi";
 import { useCart } from "../context/CartContext";
-import { MenuPromos } from "../components/MenuPromos";
 import { FaLeaf, FaFire } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
@@ -404,8 +403,6 @@ function Menu() {
         </div>
       </div>
 
-      {/* Featured Food Promos & Campaigns */}
-      <MenuPromos />
 
       {/* Sticky category nav */}
       <div className="sticky top-15 z-40 bg-[#faf5ef]/95 backdrop-blur-sm border-b-2 border-gray-900/15 px-4 py-4.5 shadow-sm">
