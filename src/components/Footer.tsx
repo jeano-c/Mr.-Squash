@@ -78,9 +78,6 @@ function Footer() {
               <p className="font-black text-xl leading-none tracking-tight">
                 Mr. Squash
               </p>
-              <p className="text-gray-400 text-xs tracking-widest uppercase mt-0.5">
-                Squash Nax
-              </p>
             </div>
           </div>
           <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
