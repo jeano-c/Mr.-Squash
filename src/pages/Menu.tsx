@@ -20,8 +20,6 @@ import riceImg from "../assets/rice.png";
 import gravyImg from "../assets/gravy.png";
 import ketchupImg from "../assets/ketchup.png";
 import creamyImg from "../assets/creamy.png";
-import lemonImg from "../assets/lemon.png";
-import mangoImg from "../assets/mango.png";
 import tea from "../assets/tea.png";
 import royal from "../assets/royal.png";
 import sprite from "../assets/sprite.png";
