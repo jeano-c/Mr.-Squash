@@ -22,7 +22,11 @@ import ketchupImg from "../assets/ketchup.png";
 import creamyImg from "../assets/creamy.png";
 import lemonImg from "../assets/lemon.png";
 import mangoImg from "../assets/mango.png";
-
+import tea from "../assets/tea.png";
+import royal from "../assets/royal.png";
+import sprite from "../assets/sprite.png";
+import buko from "../assets/buko.png";
+import rc from "../assets/rc.png";
 // ── Types ────────────────────────────────────────────────────────────────────
 export interface MenuItem {
   id: number;
@@ -167,17 +171,38 @@ const SECTIONS: MenuSection[] = [
     items: [
       {
         id: 15,
-        name: "Lemon Juice",
+        name: "Iced Tea",
         price: 20,
-        image: lemonImg,
-        desc: "Fresh squeezed lemon",
+        image: tea,
+        desc: "Refreshing iced tea",
       },
       {
         id: 16,
-        name: "Mango Juice",
-        price: 20,
-        image: mangoImg,
-        desc: "Sweet Philippine mango",
+        name: "Royal",
+        price: 25,
+        image: royal,
+        desc: "Sweet orange soft drink",
+      },
+      {
+        id: 17,
+        name: "Sprite",
+        price: 25,
+        image: sprite,
+        desc: "Lemon-lime soft drink",
+      },
+      {
+        id: 18,
+        name: "Buko Juice",
+        price: 25,
+        image: buko,
+        desc: "Fresh coconut drink",
+      },
+      {
+        id: 19,
+        name: "RC Cola",
+        price: 25,
+        image: rc,
+        desc: "Classic cola soft drink",
       },
     ],
   },
@@ -201,8 +226,10 @@ interface MenuCardProps {
 function MenuCard({ item }: MenuCardProps) {
   const { addToCart, cartItems } = useCart();
   const [flash, setFlash] = useState<boolean>(false);
-  const [floatingTexts, setFloatingTexts] = useState<{ id: number; text: string }[]>([]);
-  
+  const [floatingTexts, setFloatingTexts] = useState<
+    { id: number; text: string }[]
+  >([]);
+
   const inCart = cartItems.some((i) => i.id === item.id);
 
   function handleAdd() {
@@ -212,7 +239,12 @@ function MenuCard({ item }: MenuCardProps) {
 
     // Add floating text particle
     const textId = Date.now();
-    const messages = ["+1 Crispy! 🌾", "+1 Squash! 🍊", "+1 Crunch! ✨", "+1 Delicious! 🔥"];
+    const messages = [
+      "+1 Crispy! 🌾",
+      "+1 Squash! 🍊",
+      "+1 Crunch! ✨",
+      "+1 Delicious! 🔥",
+    ];
     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
     setFloatingTexts((prev) => [...prev, { id: textId, text: randomMsg }]);
     setTimeout(() => {
@@ -272,8 +304,10 @@ function MenuCard({ item }: MenuCardProps) {
         <h3 className="font-black text-gray-900 text-sm sm:text-base leading-tight uppercase tracking-tight">
           {item.name}
         </h3>
-        <p className="text-gray-400 text-[11px] sm:text-xs font-semibold leading-relaxed flex-1">{item.desc}</p>
-        
+        <p className="text-gray-400 text-[11px] sm:text-xs font-semibold leading-relaxed flex-1">
+          {item.desc}
+        </p>
+
         <div className="flex items-center justify-between gap-1.5 mt-4 flex-wrap">
           <span className="text-[#ec7719] font-black text-lg sm:text-xl shrink-0">
             ₱{item.price}
@@ -282,16 +316,20 @@ function MenuCard({ item }: MenuCardProps) {
             onClick={handleAdd}
             className={`flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-gray-900
               transition-all duration-200 active:scale-95 shadow-[2px_2px_0px_#111] cursor-pointer shrink-0
-              ${flash 
-                ? "bg-green-500 text-white border-green-600 shadow-none scale-105" 
-                : "bg-[#ec7719] hover:bg-[#c65e0a] text-white hover:-translate-y-0.5"}`}
+              ${
+                flash
+                  ? "bg-green-500 text-white border-green-600 shadow-none scale-105"
+                  : "bg-[#ec7719] hover:bg-[#c65e0a] text-white hover:-translate-y-0.5"
+              }`}
           >
             {flash ? (
               <HiCheck className="text-xs sm:text-sm shrink-0" />
             ) : (
               <HiPlus className="text-xs sm:text-sm shrink-0" />
             )}
-            <span className="whitespace-nowrap">{flash ? "Added!" : "Add"}</span>
+            <span className="whitespace-nowrap">
+              {flash ? "Added!" : "Add"}
+            </span>
           </button>
         </div>
       </div>
@@ -318,7 +356,7 @@ function SectionHeading({ label }: SectionHeadingProps) {
 // ── Page ─────────────────────────────────────────────────────────────────────
 function Menu() {
   const [activeSection, setActiveSection] = useState<string>("squawk");
-  
+
   // Refs for scrolling and tracking
   const navRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -334,7 +372,7 @@ function Menu() {
           }
         });
       },
-      { rootMargin: "-120px 0px -60% 0px" } 
+      { rootMargin: "-120px 0px -60% 0px" },
     );
 
     const currentSections = sectionRefs.current;
@@ -354,7 +392,8 @@ function Menu() {
     const nav = navRef.current;
     const activeBtn = buttonRefs.current[activeSection];
     if (nav && activeBtn) {
-      const scrollPos = activeBtn.offsetLeft - nav.offsetWidth / 2 + activeBtn.offsetWidth / 2;
+      const scrollPos =
+        activeBtn.offsetLeft - nav.offsetWidth / 2 + activeBtn.offsetWidth / 2;
       nav.scrollTo({ left: scrollPos, behavior: "smooth" });
     }
   }, [activeSection]);
@@ -398,16 +437,16 @@ function Menu() {
           </h1>
 
           <p className="text-orange-100 text-xs md:text-sm font-semibold max-w-xl mx-auto leading-relaxed">
-            Everything made with real calabasa goodness. Pick your favorites and experience the crunch!
+            Everything made with real calabasa goodness. Pick your favorites and
+            experience the crunch!
           </p>
         </div>
       </div>
 
-
       {/* Sticky category nav */}
       <div className="sticky top-15 z-40 bg-[#faf5ef]/95 backdrop-blur-sm border-b-2 border-gray-900/15 px-4 py-4.5 shadow-sm">
         <div
-          ref={navRef} 
+          ref={navRef}
           className="max-w-6xl mx-auto flex gap-3 overflow-x-auto py-1 scroll-smooth"
           style={{ scrollbarWidth: "none" }}
         >
@@ -415,7 +454,7 @@ function Menu() {
             <button
               key={s.id}
               ref={(el) => {
-                buttonRefs.current[s.id] = el; 
+                buttonRefs.current[s.id] = el;
               }}
               onClick={() => scrollToSection(s.id)}
               className={`shrink-0 px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider
@@ -437,7 +476,7 @@ function Menu() {
         {SECTIONS.map((section) => (
           <div
             key={section.id}
-            id={section.id} 
+            id={section.id}
             ref={(el) => {
               sectionRefs.current[section.id] = el;
             }}
