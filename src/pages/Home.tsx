@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
+import localFarmersImg from "../assets/posters/18_20260620_083744_0001.webp";
+import billboardImg from "../assets/posters/26_20260620_083745_0012.webp";
 
 // Images
 import combo1 from "../assets/combo1.png";
@@ -13,6 +15,8 @@ import {
   HiOutlineLocationMarker,
   HiOutlineFire,
   HiOutlineHeart,
+  HiOutlineZoomIn,
+  HiX,
 } from "react-icons/hi";
 
 // Combo Data
@@ -58,6 +62,7 @@ const combos = [
 function Home() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [activePoster, setActivePoster] = useState<string | null>(null);
 
   // Auto-play carousel every 5 seconds
   useEffect(() => {
@@ -66,6 +71,16 @@ function Home() {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
+
+  // Keyboard listener for lightbox escape
+  useEffect(() => {
+    if (activePoster === null) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActivePoster(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activePoster]);
 
   const activeCombo = combos[currentIndex];
 
@@ -320,6 +335,8 @@ function Home() {
         </div>
       </section>
 
+
+
       {/* ══════════════════════════════════════════
           VALUES BENTO BOX (Light Mode)
       ══════════════════════════════════════════ */}
@@ -345,20 +362,35 @@ function Home() {
             
             {/* BOX 1: Wide Feature (Top Left) */}
             <div
-              className="md:col-span-2 bg-white rounded-4xl p-8 md:p-10 
-              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-end relative overflow-hidden min-h-62.5 md:min-h-0"
+              className="md:col-span-2 bg-white rounded-4xl p-6 md:p-8 
+              border border-orange-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col sm:flex-row justify-between gap-6 relative overflow-hidden min-h-62.5 md:min-h-0"
             >
-              <HiOutlineLocationMarker className="text-[#ec7719] text-5xl md:text-6xl mb-6 opacity-90 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500" />
-              <h3 className="text-gray-900 font-black text-3xl md:text-4xl uppercase tracking-tight mb-3 z-10">
-                100% Local Squash
-              </h3>
-              <p className="text-gray-500 font-medium text-sm md:text-base max-w-md z-10 leading-relaxed">
-                Real Philippine Calabasa. No shortcuts and absolutely no
-                artificial fillers. Just locally grown squash turned into your
-                new fast-food addiction.
-              </p>
-              {/* Decorative shape */}
-              <div className="absolute -right-10 -bottom-10 w-64 h-64 border-40 border-orange-50 rounded-full group-hover:border-[#ec7719]/10 transition-colors duration-500" />
+              <div className="flex-1 flex flex-col justify-center z-10">
+                <HiOutlineLocationMarker className="text-[#ec7719] text-5xl md:text-6xl mb-4 opacity-90 group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-500" />
+                <h3 className="text-gray-900 font-black text-2xl md:text-3xl uppercase tracking-tight mb-2">
+                  100% Local Squash
+                </h3>
+                <p className="text-gray-500 font-bold text-xs md:text-sm max-w-sm leading-relaxed">
+                  Real Philippine Calabasa. No shortcuts and absolutely no
+                  artificial fillers. Just locally grown squash turned into your
+                  new fast-food addiction.
+                </p>
+              </div>
+              
+              <div 
+                onClick={() => setActivePoster(localFarmersImg)}
+                className="w-full sm:w-auto h-48 sm:h-full aspect-[4/5] mx-auto sm:mx-0 shrink-0 relative overflow-hidden rounded-3xl border-2 border-orange-100/50 bg-gray-50 group/poster cursor-zoom-in shadow-xs hover:shadow-md transition-all duration-300"
+              >
+                <img
+                  src={localFarmersImg}
+                  alt="Mr. Squash local farmers"
+                  className="w-full h-full object-cover group-hover/poster:scale-[1.03] transition-transform duration-500 pointer-events-none"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover/poster:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[1px]">
+                  <HiOutlineZoomIn className="text-white text-2xl transform scale-95 group-hover/poster:scale-100 transition-transform duration-300" />
+                </div>
+              </div>
             </div>
 
             {/* BOX 2: Square Feature (Top Right) */}
@@ -397,7 +429,7 @@ function Home() {
 
             {/* BOX 4: CTA Wide Block (Bottom Right) */}
             <div
-              className="md:col-span-2 bg-[#ec7719] rounded-4xl p-8 md:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8 
+              className="md:col-span-2 bg-[#ec7719] rounded-4xl p-6 md:p-8 flex flex-col sm:flex-row items-stretch justify-between gap-6 
               hover:shadow-[0_10px_40px_rgba(236,119,25,0.4)] hover:-translate-y-1 transition-all duration-300 min-h-62.5 md:min-h-0 relative overflow-hidden"
             >
               <div
@@ -407,26 +439,82 @@ function Home() {
                   backgroundSize: "20px 20px",
                 }}
               />
-              <div className="relative z-10 flex-1">
-                <h3 className="text-white font-black text-4xl md:text-5xl uppercase tracking-tighter leading-none mb-4 drop-shadow-md">
+              <div className="relative z-10 flex-1 flex flex-col justify-center">
+                <h3 className="text-white font-black text-3xl md:text-4xl uppercase tracking-tighter leading-none mb-3 drop-shadow-md">
                   Ready to <br /> Experience It?
                 </h3>
-                <p className="text-orange-50 font-medium text-sm md:text-base max-w-sm">
+                <p className="text-orange-50 font-bold text-xs md:text-sm max-w-sm mb-5 leading-relaxed">
                   Stop reading and start eating. Grab your combo meal online
                   right now.
                 </p>
+                <button
+                  onClick={() => navigate("/menu")}
+                  className="w-max bg-white text-[#ec7719] font-black text-xs md:text-sm px-6 py-3 rounded-full 
+                    hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shadow-lg cursor-pointer"
+                >
+                  View Menu
+                </button>
               </div>
-              <button
-                onClick={() => navigate("/menu")}
-                className="relative z-10 w-full sm:w-auto bg-white text-[#ec7719] font-black text-sm md:text-base px-8 py-4 rounded-full 
-                  hover:bg-orange-50 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest shrink-0 shadow-xl cursor-pointer"
+              
+              <div 
+                onClick={() => setActivePoster(billboardImg)}
+                className="w-full sm:w-auto h-48 sm:h-full aspect-[1.29] mx-auto sm:mx-0 shrink-0 relative overflow-hidden rounded-3xl border border-white/20 bg-orange-950/10 group/poster cursor-zoom-in shadow-xs hover:shadow-md transition-all duration-300"
               >
-                View Menu
-              </button>
+                <img
+                  src={billboardImg}
+                  alt="Mr. Squash Signature Dishes"
+                  className="w-full h-full object-cover group-hover/poster:scale-[1.03] transition-transform duration-500 pointer-events-none"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover/poster:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[1px]">
+                  <HiOutlineZoomIn className="text-white text-2xl transform scale-95 group-hover/poster:scale-100 transition-transform duration-300" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Lightbox Modal for Bento Box Posters */}
+      <AnimatePresence>
+        {activePoster !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex flex-col justify-between bg-black/95 backdrop-blur-md p-4"
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-end text-white py-2 px-4 select-none">
+              <button
+                onClick={() => setActivePoster(null)}
+                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer border border-white/10"
+                aria-label="Close details"
+              >
+                <HiX className="text-xl" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 flex items-center justify-center relative overflow-hidden select-none px-2 py-4">
+              <motion.img
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.25 }}
+                src={activePoster}
+                alt="Expanded Campaign Poster"
+                className="max-w-full max-h-[80vh] object-contain drop-shadow-[0_15px_50px_rgba(0,0,0,0.8)] rounded-xl pointer-events-none"
+              />
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex flex-col items-center gap-2 pb-4 text-gray-400">
+              <p className="text-[10px] font-bold uppercase tracking-wider">Press Escape to close.</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

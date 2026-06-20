@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { HiPlus, HiCheck } from "react-icons/hi";
 import { useCart } from "../context/CartContext";
+import { MenuPromos } from "../components/MenuPromos";
 import { FaLeaf, FaFire } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
@@ -268,30 +269,30 @@ function MenuCard({ item }: MenuCardProps) {
       </div>
 
       {/* info */}
-      <div className="flex flex-col flex-1 p-5 gap-1.5 bg-white">
-        <h3 className="font-black text-gray-900 text-base leading-tight uppercase tracking-tight">
+      <div className="flex flex-col flex-1 p-4 sm:p-5 gap-1.5 bg-white">
+        <h3 className="font-black text-gray-900 text-sm sm:text-base leading-tight uppercase tracking-tight">
           {item.name}
         </h3>
-        <p className="text-gray-400 text-xs font-semibold leading-relaxed flex-1">{item.desc}</p>
+        <p className="text-gray-400 text-[11px] sm:text-xs font-semibold leading-relaxed flex-1">{item.desc}</p>
         
-        <div className="flex items-center justify-between mt-4">
-          <span className="text-[#ec7719] font-black text-xl">
+        <div className="flex items-center justify-between gap-1.5 mt-4 flex-wrap">
+          <span className="text-[#ec7719] font-black text-lg sm:text-xl shrink-0">
             ₱{item.price}
           </span>
           <button
             onClick={handleAdd}
-            className={`flex items-center gap-1.5 text-xs font-black uppercase tracking-wider px-4 py-2 rounded-full border-2 border-gray-900
-              transition-all duration-200 active:scale-95 shadow-[2px_2px_0px_#111] cursor-pointer
+            className={`flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-gray-900
+              transition-all duration-200 active:scale-95 shadow-[2px_2px_0px_#111] cursor-pointer shrink-0
               ${flash 
                 ? "bg-green-500 text-white border-green-600 shadow-none scale-105" 
                 : "bg-[#ec7719] hover:bg-[#c65e0a] text-white hover:-translate-y-0.5"}`}
           >
             {flash ? (
-              <HiCheck className="text-sm" />
+              <HiCheck className="text-xs sm:text-sm shrink-0" />
             ) : (
-              <HiPlus className="text-sm" />
+              <HiPlus className="text-xs sm:text-sm shrink-0" />
             )}
-            {flash ? "Added!" : "Add"}
+            <span className="whitespace-nowrap">{flash ? "Added!" : "Add"}</span>
           </button>
         </div>
       </div>
@@ -403,6 +404,9 @@ function Menu() {
         </div>
       </div>
 
+      {/* Featured Food Promos & Campaigns */}
+      <MenuPromos />
+
       {/* Sticky category nav */}
       <div className="sticky top-15 z-40 bg-[#faf5ef]/95 backdrop-blur-sm border-b-2 border-gray-900/15 px-4 py-4.5 shadow-sm">
         <div
@@ -444,13 +448,13 @@ function Menu() {
           >
             <SectionHeading label={section.label} />
             <div
-              className={`grid gap-6
+              className={`grid gap-4 sm:gap-6
               ${
                 section.items.length === 4
-                  ? "grid-cols-2 md:grid-cols-4"
+                  ? "grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-4"
                   : section.items.length === 2
-                    ? "grid-cols-2 md:grid-cols-2 max-w-sm mx-auto md:max-w-md"
-                    : "grid-cols-2 md:grid-cols-3"
+                    ? "grid-cols-1 min-[450px]:grid-cols-2 max-w-sm min-[450px]:max-w-xl mx-auto md:max-w-2xl"
+                    : "grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3"
               }`}
             >
               {section.items.map((item) => (
