@@ -397,11 +397,11 @@ function AboutUs() {
             <div className="flex flex-wrap gap-3">
               <div className="bg-orange-50 text-[#ec7719] px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 border border-orange-100">
                 <HiOutlineMap className="text-lg" />
-                Valenzuela Flagship
+                Valenzuela 
               </div>
               <div className="bg-gray-100 text-gray-600 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 border border-gray-200">
                 <HiOutlineClock className="text-lg" />
-                11am - 9pm
+                10:00am - 10:00pm
               </div>
               <div className="bg-gray-100 text-gray-600 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 border border-gray-200">
                 <HiOutlinePhone className="text-lg" />
