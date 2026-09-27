@@ -13,6 +13,9 @@ import {
 import storeInside from "../assets/store/Screenshot 2026-06-04 144603.png";
 import storeCounter from "../assets/store/Screenshot 2026-06-04 144731.png";
 import storeVibe from "../assets/store/Screenshot 2026-06-04 144747.png";
+import storeDining from "../assets/store/Screenshot 2026-08-19 202201.png";
+import storeWall from "../assets/store/Screenshot 2026-08-19 202219.png";
+import storeFront from "../assets/store/Screenshot 2026-08-19 203239.png";
 
 // ── Social Media Data ────────────────────────────────────────────────────────
 const SOCIALS = [
@@ -53,30 +56,51 @@ const staggerContainer: Variants = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function AboutUs() {
-  const [deck, setDeck] = useState([0, 1, 2]);
+  const [deck, setDeck] = useState([0, 1, 2, 3, 4, 5]);
   const [activeTab, setActiveTab] = useState<"mission" | "vision">("mission");
 
   const cardsData = [
     {
       id: 0,
-      img: storeInside,
-      label: "Our Cozy Interior",
+      img: storeFront,
+      label: "Welcome to Mr. Squash",
       color: "bg-[#fef08a]",
       rotate: -3,
     },
     {
       id: 1,
-      img: storeCounter,
-      label: "Fresh Out The Fryer!",
+      img: storeInside,
+      label: "Our Cozy Interior",
       color: "bg-[#ffedd5]",
       rotate: 2,
     },
     {
       id: 2,
+      img: storeCounter,
+      label: "Fresh Out The Fryer!",
+      color: "bg-white",
+      rotate: -2,
+    },
+    {
+      id: 3,
+      img: storeDining,
+      label: "Community Dining Area",
+      color: "bg-[#fef9c3]",
+      rotate: 3,
+    },
+    {
+      id: 4,
       img: storeVibe,
       label: "Good Place • Good Vibes",
-      color: "bg-white",
+      color: "bg-[#fed7aa]",
       rotate: -1,
+    },
+    {
+      id: 5,
+      img: storeWall,
+      label: "Counter & Wall Highlights",
+      color: "bg-white",
+      rotate: 2,
     },
   ];
 
@@ -162,10 +186,11 @@ function AboutUs() {
                     key={card.id}
                     style={{ zIndex: 30 - index }}
                     animate={{
-                      x: index * 10,
-                      y: index * 10,
-                      scale: 1 - index * 0.04,
-                      rotate: isTop ? card.rotate : card.rotate + index * 2,
+                      x: Math.min(index, 3) * 10,
+                      y: Math.min(index, 3) * 10,
+                      scale: 1 - Math.min(index, 3) * 0.04,
+                      rotate: isTop ? card.rotate : card.rotate + (index % 3) * 2 - 1,
+                      opacity: index > 3 ? 0 : 1,
                     }}
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     className={`absolute inset-0 p-3 pb-8 sm:p-4 sm:pb-10 rounded-[2rem] border-[4px] border-[#111] shadow-[4px_4px_0px_#111] ${card.color} flex flex-col justify-between select-none`}

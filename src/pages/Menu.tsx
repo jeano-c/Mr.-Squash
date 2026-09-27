@@ -20,7 +20,7 @@ import riceImg from "../assets/rice.png";
 import gravyImg from "../assets/gravy.png";
 import ketchupImg from "../assets/ketchup.png";
 import creamyImg from "../assets/creamy.png";
-import tea from "../assets/tea.png";
+import lemon from "../assets/lemon.png";
 import royal from "../assets/royal.png";
 import sprite from "../assets/sprite.png";
 import buko from "../assets/buko.png";
@@ -42,124 +42,180 @@ export interface MenuSection {
 
 const SECTIONS: MenuSection[] = [
   {
-    id: "squawk",
-    label: "Squawk Meals",
+    id: "rice",
+    label: "Rice Meals",
     items: [
       {
         id: 1,
-        name: "Pump-let Chicken",
-        price: 89,
+        name: "Pumplet Chicken w/ rice",
+        price: 109,
         image: pumpletImg,
-        desc: "Crispy calabasa-coated chicken",
+        desc: "Crispy calabasa-coated chicken served with hot rice",
       },
       {
         id: 2,
-        name: "Krispy Chickalabasa",
-        price: 89,
+        name: "Krispy Chickalabasa w/ rice",
+        price: 109,
         image: kriskalImg,
-        desc: "Golden fried with squash glaze",
+        desc: "Golden fried chicken with savory squash glaze served with rice",
       },
       {
         id: 3,
-        name: "Kala-Boom",
+        name: "Kalaboom w/ rice",
+        price: 109,
+        image: kalaboomImg,
+        desc: "Spicy squash battered chicken bites served with hot rice",
+      },
+      {
+        id: 4,
+        name: "Kalaboom Ala Carte",
         price: 79,
         image: kalaboomImg,
-        desc: "Spicy squash battered bites",
+        desc: "Crispy spicy squash battered chicken bites",
       },
     ],
   },
   {
-    id: "nacks",
-    label: "Squash Nacks",
+    id: "snacks",
+    label: "Snacks",
     items: [
       {
-        id: 4,
-        name: "Squash Fries",
-        price: 39,
-        image: sqfiesImg,
-        desc: "Seasoned calabasa fries",
-      },
-      {
         id: 5,
-        name: "Kala-Bites",
-        price: 49,
+        name: "Kala-bites",
+        price: 79,
         image: kalabitsImg,
-        desc: "Bite-sized squash nuggets",
+        desc: "Bite-sized crispy squash nuggets",
       },
       {
         id: 6,
         name: "Squash Burger",
-        price: 69,
+        price: 59,
         image: sqburgerImg,
-        desc: "Juicy patty on a toasted bun",
+        desc: "Juicy squash patty on a toasted bun",
+      },
+      {
+        id: 7,
+        name: "Squash Fries",
+        price: 59,
+        image: sqfiesImg,
+        desc: "Golden seasoned calabasa fries",
       },
     ],
   },
   {
-    id: "combo",
-    label: "Combo Meals",
+    id: "sulit",
+    label: "Sulit Meals",
     items: [
       {
-        id: 7,
-        name: "Combo A",
-        price: 164,
-        image: combo1Img,
-        desc: "Kala-boom with Drink and Burger",
-      },
-      {
         id: 8,
-        name: "Combo B",
-        price: 164,
-        image: combo2Img,
-        desc: "Pump-let Chicken with Drink and Kala-Bites",
+        name: "S1 - Pumplet Chicken w/ rice and drink",
+        price: 139,
+        image: pumpletImg,
+        desc: "Pumplet Chicken served with rice and refreshing drink",
       },
       {
         id: 9,
-        name: "Combo C",
-        price: 144,
-        image: combo3Img,
-        desc: "Krispy Chickalabasa with Drink and Fries",
+        name: "S2 - Krispy Chickalabasa w/ rice and drink",
+        price: 139,
+        image: kriskalImg,
+        desc: "Krispy Chickalabasa served with rice and refreshing drink",
       },
       {
         id: 10,
-        name: "Combo D",
-        price: 184,
-        image: combo4Img,
-        desc: "Burger, Fries, Kala-Bites, and Drink",
+        name: "S3 - Kalaboom w/ rice and drink",
+        price: 139,
+        image: kalaboomImg,
+        desc: "Kalaboom served with rice and refreshing drink",
+      },
+      {
+        id: 11,
+        name: "S4 - Kala-Bites w/ drink",
+        price: 109,
+        image: kalabitsImg,
+        desc: "Crispy Kala-Bites paired with a cold drink",
+      },
+      {
+        id: 12,
+        name: "S5 - Squash Fries w/ drink",
+        price: 94,
+        image: sqfiesImg,
+        desc: "Crispy seasoned Squash Fries with a cold drink",
+      },
+      {
+        id: 13,
+        name: "S6 - Squash Burger w/ drink",
+        price: 94,
+        image: sqburgerImg,
+        desc: "Savory Squash Burger with a cold drink",
       },
     ],
   },
   {
-    id: "addons",
-    label: "Add Ons",
+    id: "super",
+    label: "Super Meals",
     items: [
       {
-        id: 11,
-        name: "Rice",
-        price: 15,
-        image: riceImg,
-        desc: "Steamed white rice",
-      },
-      {
-        id: 12,
-        name: "Gravy",
-        price: 12,
-        image: gravyImg,
-        desc: "Rich brown gravy",
-      },
-      {
-        id: 13,
-        name: "Ketchup Mayo",
-        price: 15,
-        image: ketchupImg,
-        desc: "Creamy ketchup blend",
-      },
-      {
         id: 14,
-        name: "Creamy Sauce",
-        price: 15,
-        image: creamyImg,
-        desc: "House special sauce",
+        name: "S7 - Pumplet Chicken w/ rice, kala-bites, and drink",
+        price: 219,
+        image: combo2Img,
+        desc: "Pumplet Chicken with rice, Kala-Bites, and drink",
+      },
+      {
+        id: 15,
+        name: "S8 - Krispy Chickalabasa w/ rice, kala-bites, and drink",
+        price: 219,
+        image: kriskalImg,
+        desc: "Krispy Chickalabasa with rice, Kala-Bites, and drink",
+      },
+      {
+        id: 16,
+        name: "S9 - Kalaboom w/ rice, kala-bites, and drink",
+        price: 219,
+        image: kalaboomImg,
+        desc: "Spicy Kalaboom with rice, Kala-Bites, and drink",
+      },
+      {
+        id: 17,
+        name: "S10 - Pumplet Chicken w/ rice, squash fries, and drink",
+        price: 199,
+        image: pumpletImg,
+        desc: "Pumplet Chicken with rice, Squash Fries, and drink",
+      },
+      {
+        id: 18,
+        name: "S11 - Krispy Chickalabasa w/ rice, squash fries, and drink",
+        price: 199,
+        image: combo3Img,
+        desc: "Krispy Chickalabasa with rice, Squash Fries, and drink",
+      },
+      {
+        id: 19,
+        name: "S12 - Kalaboom w/ rice, squash fries, and drink",
+        price: 199,
+        image: kalaboomImg,
+        desc: "Spicy Kalaboom with rice, Squash Fries, and drink",
+      },
+      {
+        id: 20,
+        name: "S13 - Pumplet Chicken w/ rice, squash burger, and drink",
+        price: 199,
+        image: combo1Img,
+        desc: "Pumplet Chicken with rice, Squash Burger, and drink",
+      },
+      {
+        id: 21,
+        name: "S14 - Krispy Chickalabasa w/ rice, squash burger, and drink",
+        price: 199,
+        image: combo4Img,
+        desc: "Krispy Chickalabasa with rice, Squash Burger, and drink",
+      },
+      {
+        id: 22,
+        name: "S15 - Kalaboom w/ rice, squash burger, and drink",
+        price: 199,
+        image: combo1Img,
+        desc: "Kalaboom with rice, Squash Burger, and drink",
       },
     ],
   },
@@ -168,39 +224,73 @@ const SECTIONS: MenuSection[] = [
     label: "Drinks",
     items: [
       {
-        id: 15,
-        name: "Iced Tea",
-        price: 20,
-        image: tea,
-        desc: "Refreshing iced tea",
-      },
-      {
-        id: 16,
-        name: "Royal",
-        price: 25,
-        image: royal,
-        desc: "Sweet orange soft drink",
-      },
-      {
-        id: 17,
-        name: "Sprite",
-        price: 25,
-        image: sprite,
-        desc: "Lemon-lime soft drink",
-      },
-      {
-        id: 18,
+        id: 23,
         name: "Buko Juice",
-        price: 25,
+        price: 40,
         image: buko,
-        desc: "Fresh coconut drink",
+        desc: "Fresh and sweet natural coconut drink",
       },
       {
-        id: 19,
+        id: 24,
+        name: "Lemon Juice",
+        price: 40,
+        image: lemon,
+        desc: "Chilled zesty fresh lemon juice",
+      },
+      {
+        id: 25,
+        name: "Royal",
+        price: 40,
+        image: royal,
+        desc: "Sweet orange sparkling soda",
+      },
+      {
+        id: 26,
+        name: "Sprite",
+        price: 40,
+        image: sprite,
+        desc: "Refreshing lemon-lime sparkling soda",
+      },
+      {
+        id: 27,
         name: "RC Cola",
-        price: 25,
+        price: 40,
         image: rc,
-        desc: "Classic cola soft drink",
+        desc: "Classic ice-cold cola soda",
+      },
+    ],
+  },
+  {
+    id: "addons",
+    label: "Add Ons",
+    items: [
+      {
+        id: 28,
+        name: "Rice",
+        price: 20,
+        image: riceImg,
+        desc: "Extra steamed white rice",
+      },
+      {
+        id: 29,
+        name: "Gravy",
+        price: 12,
+        image: gravyImg,
+        desc: "Rich brown savory gravy",
+      },
+      {
+        id: 30,
+        name: "Ketchup Mayo",
+        price: 15,
+        image: ketchupImg,
+        desc: "Creamy ketchup blend",
+      },
+      {
+        id: 31,
+        name: "Creamy Sauce",
+        price: 15,
+        image: creamyImg,
+        desc: "House special sauce",
       },
     ],
   },
@@ -225,7 +315,7 @@ function MenuCard({ item }: MenuCardProps) {
   const { addToCart, cartItems } = useCart();
   const [flash, setFlash] = useState<boolean>(false);
   const [floatingTexts, setFloatingTexts] = useState<
-    { id: number; text: string }[]
+    { id: number; text: string; rotate: number }[]
   >([]);
 
   const inCart = cartItems.some((i) => i.id === item.id);
@@ -244,7 +334,8 @@ function MenuCard({ item }: MenuCardProps) {
       "+1 Delicious! 🔥",
     ];
     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-    setFloatingTexts((prev) => [...prev, { id: textId, text: randomMsg }]);
+    const rotate = Math.random() * 14 - 7;
+    setFloatingTexts((prev) => [...prev, { id: textId, text: randomMsg, rotate }]);
     setTimeout(() => {
       setFloatingTexts((prev) => prev.filter((t) => t.id !== textId));
     }, 800);
@@ -285,7 +376,7 @@ function MenuCard({ item }: MenuCardProps) {
                 opacity: 1,
                 y: -60,
                 scale: 1.1,
-                rotate: Math.random() * 14 - 7,
+                rotate: ft.rotate,
               }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.75, ease: "easeOut" }}
@@ -353,7 +444,7 @@ function SectionHeading({ label }: SectionHeadingProps) {
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 function Menu() {
-  const [activeSection, setActiveSection] = useState<string>("squawk");
+  const [activeSection, setActiveSection] = useState<string>("rice");
 
   // Refs for scrolling and tracking
   const navRef = useRef<HTMLDivElement>(null);
